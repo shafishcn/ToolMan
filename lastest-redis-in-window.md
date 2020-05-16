@@ -65,3 +65,6 @@ OK，redis服务端运行成功。
     - 直接新建一个wls命令窗口，输入`redis-cli`使用。
 
 OK。
+
+ref:
+- https://github.com/ServiceStack/redis-windows
