@@ -67,7 +67,6 @@ URxvt.boldfont:                   xft:Source Code Pro:antialias=True:pixelsize=1
 - 下载oracle jdk压缩包
 - `sudo tar xzvf jdk-xxxx -C /opt`
 - `echo -e 'export JAVA_HOME="/opt/jdk-xxxx"\nexport PATH="$PATH:${JAVA_HOME}/bin"\n' | sudo tee /etc/profile.d/jdk11.sh`
-- reboot
 
 ## 十一、VSCode java配置
 > https://code.visualstudio.com/docs/java/java-tutorial
