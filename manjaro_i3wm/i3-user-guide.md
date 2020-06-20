@@ -67,6 +67,7 @@ URxvt.boldfont:                   xft:Source Code Pro:antialias=True:pixelsize=1
 - 下载oracle jdk压缩包
 - `sudo tar xzvf jdk-xxxx -C /opt`
 - `echo -e 'export JAVA_HOME="/opt/jdk-xxxx"\nexport PATH="$PATH:${JAVA_HOME}/bin"\n' | sudo tee /etc/profile.d/jdk11.sh`
+- reboot
 
 ## 十一、VSCode java配置
 > https://code.visualstudio.com/docs/java/java-tutorial
@@ -110,3 +111,49 @@ ext install alefragnani.project-manager
 - 自动导入依赖：alt+shift+o
 - 类重写方法：右键 source action
 - 
+
+## 十六、另一个包管理工具
+```
+sudo pacman -S snapd
+sudo systemctl enable --now snapd.socket
+sudo ln -s /var/lib/snapd/snap /snap
+
+sudo snap install snap-store
+```
+
+## 十七、深度文件管理
+```
+sudo pacman -S deepin-file-manager
+sudo pacman -S deepin-screenshot
+```
+
+## 十八、指定任意软件代理
+proxychain:https://github.com/rofl0r/proxychains-ng
+```
+https://github.com/rofl0r/proxychains-ng
+cd proxychains-ng
+sudo ./configure --prefix=/usr --sysconfdir=/etc 
+sudo make
+sudo make install 
+sudo make install-config
+sudo vim /etc/proxychains.conf #修改为`socks5  127.0.0.1 1080`，具体根据用户使用的代理软件设置
+```
+ok!
+以后需要使用代理的命令或者软件只需要在命令行前加上`proxychains4`启动即可。比如
+```
+curl myip.ipip.net
+# 使用代理
+proxychains4 curl myip.ipip.net
+```
+再次ok
+> 因为使用的是trojan，只支持sock5，平时使用的wget，curl等都是htp_proxy，无法用sock5代理，而proxychain可以把http_proxy代理到socks5上。
+
+> 问题:docker pull镜像使用proxychain代理无效(待解决)
+
+## 十九、程序启动时,指定工作区
+sudo pacman -S xorg-xprop
+ xprop运行,移动鼠标获取WM_CLASS(STRING) = XXXX
+ 写入.i3/config中
+ ```
+assign [class="(?i)Chrome"] $ws2
+ ```
