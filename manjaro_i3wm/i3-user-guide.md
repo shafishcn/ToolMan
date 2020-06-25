@@ -16,8 +16,8 @@ reboot
     - vim ~/.xprofile
     ```
     #fcitx
-    export GTK_IM_MODULE=fcitx 
-    export QT_IM_MODULE=fcitx 
+    export GTK_IM_MODULE=fcitx
+    export QT_IM_MODULE=fcitx
     export XMODIFIERS="@im=fcitx"
     ```
     - `sudo pacman -S fcitx-googlepinyin`
@@ -64,10 +64,20 @@ URxvt.boldfont:                   xft:Source Code Pro:antialias=True:pixelsize=1
 ## 十、为所有用户配置java开发配置
 > https://linuxhint.com/install_jdk_12_arch_linux/
 
-- 下载oracle jdk压缩包
+- 下载oracle jdk压缩包p232p
 - `sudo tar xzvf jdk-xxxx -C /opt`
 - `echo -e 'export JAVA_HOME="/opt/jdk-xxxx"\nexport PATH="$PATH:${JAVA_HOME}/bin"\n' | sudo tee /etc/profile.d/jdk11.sh`
-- reboot
+- 命令行:source /etc/profile
+
+> 或者使用包管理工具
+
+```shell
+sudo pacman -S jdk8-openjdk
+sudo pacman -S jdk11-openjdk
+# 使用archlinux-java切换java版本
+archlinux-java status
+archlinux-java set java-8-openjdk
+```
 
 ## 十一、VSCode java配置
 > https://code.visualstudio.com/docs/java/java-tutorial
@@ -132,7 +142,7 @@ proxychain:https://github.com/rofl0r/proxychains-ng
 ```
 https://github.com/rofl0r/proxychains-ng
 cd proxychains-ng
-sudo ./configure --prefix=/usr --sysconfdir=/etc 
+sudo ./configure --prefix=/usr --sysconfdir=/etc
 sudo make
 sudo make install 
 sudo make install-config
@@ -158,8 +168,8 @@ sudo pacman -S xorg-xprop
 assign [class="(?i)Chrome"] $ws2
  ```
 
-docker run -p 9000:9000 --name minio -v /data/minio/data:/data -v /data/minio/config:/root/.minio -d minio/minio server /data
+docker run -p 9000:9000 --name minio -v /data/minio/data:/data -v /data/minio/config:/root/.minio -d --restart unless-stopped minio/minio server /data
  
 docker run -d -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve/video:/media --user 1000:1000 --net=host --restart=unless-stopped --privileged=true jellyfin/jellyfin
 
-docker create --name=jellyfin -e PUID=1000 -e PGID=1000 -p 8096:8096 -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve1/video/b:/data/b  -v /run/media/graham/In-Reserve1/video/t:/data/t -v /run/media/graham/In-Reserve1/video/video:/data/video -v /run/media/graham/In-Reserve1/video/new:/data/new --restart unless-stopped linuxserver/jellyfin
+docker create --name=jellyfin -e PUID=1000 -e PGID=1000 -p 8096:8096 -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve/video/b:/data/b  -v /run/media/graham/In-Reserve/video/t:/data/t -v /run/media/graham/In-Reserve/video/video:/data/video -v /run/media/graham/In-Reserve/video/new:/data/new -v /run/media/graham/In-Reserve/资料:/data/codding --restart unless-stopped linuxserver/jellyfin
