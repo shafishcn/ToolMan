@@ -168,6 +168,11 @@ sudo pacman -S xorg-xprop
 assign [class="(?i)Chrome"] $ws2
  ```
 
+## aria2
+https://zhuanlan.zhihu.com/p/77336764
+
+## minio和jellyfin
+
 docker run -p 9000:9000 --name minio -v /data/minio/data:/data -v /data/minio/config:/root/.minio -d --restart unless-stopped minio/minio server /data
  
 docker run -d -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve/video:/media --user 1000:1000 --net=host --restart=unless-stopped --privileged=true jellyfin/jellyfin
