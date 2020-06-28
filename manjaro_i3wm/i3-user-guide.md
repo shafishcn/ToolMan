@@ -1,8 +1,12 @@
 > 软件安装规范（安装目录约定）
 https://www.cnblogs.com/ggjucheng/archive/2012/08/20/2647788.html
 
-- /etc - 配置文件
-- /opt - 第三方软件
+- /etc --> 配置文件
+- /opt --> 第三方软件
+- /data --> docker数据挂载目录
+- /run/media/graham --> 外置硬盘路径
+- /home/graham/Documents --> 文档编写记录
+- /home/graham/Project/{Git,Java} --> 项目工程目录
 
 
 ## 一、obs没有声音
@@ -172,9 +176,26 @@ assign [class="(?i)Chrome"] $ws2
 https://zhuanlan.zhihu.com/p/77336764
 
 ## minio和jellyfin
-
+```
 docker run -p 9000:9000 --name minio -v /data/minio/data:/data -v /data/minio/config:/root/.minio -d --restart unless-stopped minio/minio server /data
- 
-docker run -d -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve/video:/media --user 1000:1000 --net=host --restart=unless-stopped --privileged=true jellyfin/jellyfin
+```
 
-docker create --name=jellyfin -e PUID=1000 -e PGID=1000 -p 8096:8096 -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve/video/b:/data/b  -v /run/media/graham/In-Reserve/video/t:/data/t -v /run/media/graham/In-Reserve/video/video:/data/video -v /run/media/graham/In-Reserve/video/new:/data/new -v /run/media/graham/In-Reserve/资料:/data/codding --restart unless-stopped linuxserver/jellyfin
+```
+docker run -d -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve1/video:/media --user 1000:1000 --net=host --restart=unless-stopped --privileged=true jellyfin/jellyfin
+```
+
+```
+docker create --name=jellyfin -e PUID=1000 -e PGID=1000 -p 8096:8096 -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve1/video/b:/data/b  -v /run/media/graham/In-Reserve1/video/t:/data/t -v /run/media/graham/In-Reserve1/video/video:/data/video -v /run/media/graham/In-Reserve1/video/new:/data/new -v /run/media/graham/In-Reserve1/资料:/data/codding --restart unless-stopped linuxserver/jellyfin
+```
+## m3u8
+```
+ffmpeg -i 本地视频地址 -y -c:v libx264 -strict -2 转换视频.mp4
+ffmpeg -y -i 本地视频.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 转换视频.ts
+ffmpeg -i 本地视频.ts -c copy -map 0 -f segment -segment_list 视频索引.m3u8 -segment_time 5 前缀-%03d.ts
+```
+
+https://segmentfault.com/q/1010000007235579
+
+## 二十:睡眠后断网的情况
+卸载网卡驱动:modprobe -r r8169
+重装驱动:modprobe r8169
