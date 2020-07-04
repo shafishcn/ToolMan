@@ -199,3 +199,13 @@ https://segmentfault.com/q/1010000007235579
 ## 二十:睡眠后断网的情况
 卸载网卡驱动:modprobe -r r8169
 重装驱动:modprobe r8169
+
+/home/graham/Project/Git/lemonsdkserver/src/db/lemonjamsdkpro702.sql
+
+docker run -u root -d -p 49080:8080 -p 50000:50000 -v /data/jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean
+
+## QQ:http://www.waimaosns.cc/arch-linux-i3wm-run-deepin-qq-tim/
+- 图标
+yay -S la-capitaine-icon-theme
+
+nohup /usr/lib/gsd-xsettings > /dev/null 2>&1 &
