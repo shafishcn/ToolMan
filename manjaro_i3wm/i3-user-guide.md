@@ -209,3 +209,9 @@ docker run -u root -d -p 49080:8080 -p 50000:50000 -v /data/jenkins-data:/var/je
 yay -S la-capitaine-icon-theme
 
 nohup /usr/lib/gsd-xsettings > /dev/null 2>&1 &
+
+## 风格
+https://minifullc.github.io/2018/03/20/Arch%20Linux%20%E7%B3%BB%E7%BB%9F%E9%A2%9C%E8%89%B2%E9%85%8D%E7%BD%AE/
+
+sudo pacman -S  qt5-styleplugins qt5ct
+sudo pacman -S dconf editor
