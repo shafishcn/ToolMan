@@ -93,17 +93,22 @@ ctrl+p 安装java配置 `ext install vscjava.vscode-java-pack`
 > i3配置文件路径：
 
 ## 十三、数据库
-安装mariadb
+- 1.安装mariadb
 ```
 pacman -S mariadb libmariadbclient mariadb-clients
 mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 sudo mysql_secure_installation
 ```
-设置密码`just1508`
+- 2.设置密码`just1508`
 
-给某个用户访问某数据库权限：
+- 3.给某个用户访问某数据库权限：
 create user 'java'@'localhost' identified by 'just1508'
 grant all privileges on lemonjamsdk.* to 'java'@'localhost'
+
+- 4.修改用户权限(密码)
+https://mariadb.org/authentication-in-mariadb-10-4/
+
+跳过密码登录mysql后需要先执行更新权限命令`FLUSH PRIVILEGES;`再alter user 'root'@'localhost' identified by '密码';
 
 ## 十四、vscode插件
 > https://zhuanlan.zhihu.com/p/35176928
@@ -210,8 +215,11 @@ yay -S la-capitaine-icon-theme
 
 nohup /usr/lib/gsd-xsettings > /dev/null 2>&1 &
 
-## 风格
+## 风格主题
 https://minifullc.github.io/2018/03/20/Arch%20Linux%20%E7%B3%BB%E7%BB%9F%E9%A2%9C%E8%89%B2%E9%85%8D%E7%BD%AE/
 
 sudo pacman -S  qt5-styleplugins qt5ct
 sudo pacman -S dconf editor
+
+
+打开lxappearance设置
