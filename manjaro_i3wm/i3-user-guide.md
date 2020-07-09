@@ -103,12 +103,21 @@ sudo mysql_secure_installation
 
 - 3.给某个用户访问某数据库权限：
 create user 'java'@'localhost' identified by 'just1508'
-grant all privileges on lemonjamsdk.* to 'java'@'localhost'
+grant all privileges on lemonjamsdkpro.* to 'java'@'localhost'
 
 - 4.修改用户权限(密码)
 https://mariadb.org/authentication-in-mariadb-10-4/
 
 跳过密码登录mysql后需要先执行更新权限命令`FLUSH PRIVILEGES;`再alter user 'root'@'localhost' identified by '密码';
+
+- 5.添加字段
+```sql
+`verification` tinyint(2) unsigned DEFAULT '1' COMMENT '账号是否通过验证。1已经验证；2没有被验证。提供手机验证码默认已经验证，邮箱注册则默认没被验证',
+`id_verification` tinyint(2) DEFAULT NULL COMMENT '是否通过了身份证验证。1通过；2没通过',
+```
+
+alter table user_auth add `verification` tinyint(2) unsigned DEFAULT '1' COMMENT '账号是否通过验证。1已经验证；2没有被验证。提供手机验证码默认已经验证，邮箱注册则默认没被验证';
+alter table user_auth add `id_verification` tinyint(2) DEFAULT NULL COMMENT '是否通过了身份证验证。1通过；2没通过';
 
 ## 十四、vscode插件
 > https://zhuanlan.zhihu.com/p/35176928
@@ -223,3 +232,7 @@ sudo pacman -S dconf editor
 
 
 打开lxappearance设置
+
+## git客户端
+- 私有仓库收费:gitkraken
+- githubDesktop:https://github.com/shiftkey/desktop
