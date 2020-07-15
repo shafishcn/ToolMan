@@ -195,11 +195,11 @@ docker run -p 9000:9000 --name minio -v /data/minio/data:/data -v /data/minio/co
 ```
 
 ```
-docker run -d -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve1/video:/media --user 1000:1000 --net=host --restart=unless-stopped --privileged=true jellyfin/jellyfin
+docker run -d -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve/video:/media --user 1000:1000 --net=host --restart=unless-stopped --privileged=true jellyfin/jellyfin
 ```
 
 ```
-docker create --name=jellyfin -e PUID=1000 -e PGID=1000 -p 8096:8096 -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve1/video/b:/data/b  -v /run/media/graham/In-Reserve1/video/t:/data/t -v /run/media/graham/In-Reserve1/video/video:/data/video -v /run/media/graham/In-Reserve1/video/new:/data/new -v /run/media/graham/In-Reserve1/资料:/data/codding --restart unless-stopped linuxserver/jellyfin
+docker create --name=jellyfin -e PUID=1000 -e PGID=1000 -p 8096:8096 -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve/video/b:/data/b  -v /run/media/graham/In-Reserve/video/t:/data/t -v /run/media/graham/In-Reserve/video/video:/data/video -v /run/media/graham/In-Reserve/video/new:/data/new -v /run/media/graham/In-Reserve/资料:/data/codding --restart unless-stopped linuxserver/jellyfin
 ```
 ## m3u8
 ```
