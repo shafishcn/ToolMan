@@ -236,6 +236,9 @@ sudo pacman -S dconf editor
 - 私有仓库收费:gitkraken
 - githubDesktop:https://github.com/shiftkey/desktop
 
+## gnome
+https://wiki.manjaro.org/index.php/Install_Desktop_Environments#Gnome_3
+
 ## 本地聊天室
 https://github.com/yinxin630/fiora/blob/master/doc/README.ZH.md
 
@@ -247,3 +250,5 @@ https://github.com/yinxin630/fiora/blob/master/doc/README.ZH.md
 启动fiora docker run --name fiora -p 9200:9200 --network fiora-network -e Database=mongodb://fioradb:27017/fiora suisuijiang/fiora
 ```
 
+## 蓝牙模块包
+sudo pacman -S bluez bluez-utils
