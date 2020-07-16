@@ -252,3 +252,13 @@ https://github.com/yinxin630/fiora/blob/master/doc/README.ZH.md
 
 ## 蓝牙模块包
 sudo pacman -S bluez bluez-utils
+
+## ssh工具
+```shell
+# 收费版提供sftp功能,待观察购买
+ssh免费: sudo snap install termius-app
+# 国产shell+ftp
+rm -f finalshell_install_linux.sh ;wget www.hostbuf.com/downloads/finalshell_install_linux.sh;chmod +x finalshell_install_linux.sh;./finalshell_install_linux.sh;
+# 有点丑
+filezilla
+```
