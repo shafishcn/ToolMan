@@ -230,9 +230,20 @@ https://minifullc.github.io/2018/03/20/Arch%20Linux%20%E7%B3%BB%E7%BB%9F%E9%A2%9
 sudo pacman -S  qt5-styleplugins qt5ct
 sudo pacman -S dconf editor
 
-
 打开lxappearance设置
 
 ## git客户端
 - 私有仓库收费:gitkraken
 - githubDesktop:https://github.com/shiftkey/desktop
+
+## 本地聊天室
+https://github.com/yinxin630/fiora/blob/master/doc/README.ZH.md
+
+```
+拉取 mongo 镜像 docker pull mongo
+拉取 fiora 镜像 docker pull suisuijiang/fiora
+创建虚拟网络 docker network create fiora-network
+启动数据库 docker run --name fioradb -p 27017:27017 --network fiora-network mongo
+启动fiora docker run --name fiora -p 9200:9200 --network fiora-network -e Database=mongodb://fioradb:27017/fiora suisuijiang/fiora
+```
+
