@@ -94,12 +94,20 @@ ctrl+p 安装java配置 `ext install vscjava.vscode-java-pack`
 
 ## 十三、数据库
 - 1.安装mariadb
-```
+```sh
 pacman -S mariadb libmariadbclient mariadb-clients
 mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-sudo mysql_secure_installation
+sudo systemctl start mysql #启动mysql服务
+# sudo mysql_secure_installation
 ```
 - 2.设置密码`just1508`
+```sh
+sudo mysql -u root -p
+FLUSH PRIVILEGES;
+ALTER USER root@localhost IDENTIFIED VIA mysql_native_password USING PASSWORD("just1508");
+exit
+sudo systemctl restart mysql
+```
 
 - 3.给某个用户访问某数据库权限：
 create user 'java'@'localhost' identified by 'just1508'
@@ -219,6 +227,7 @@ https://segmentfault.com/q/1010000007235579
 docker run -u root -d -p 49080:8080 -p 50000:50000 -v /data/jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean
 
 ## QQ:http://www.waimaosns.cc/arch-linux-i3wm-run-deepin-qq-tim/
+或者安装qq官方-qqlinux
 - 图标
 yay -S la-capitaine-icon-theme
 
@@ -261,4 +270,20 @@ ssh免费: sudo snap install termius-app
 rm -f finalshell_install_linux.sh ;wget www.hostbuf.com/downloads/finalshell_install_linux.sh;chmod +x finalshell_install_linux.sh;./finalshell_install_linux.sh;
 # 有点丑
 filezilla
+```
+
+## 访问window共享文件
+- window系统新建share用户，创建共享文件夹，赋予share用户
+- linux设置
+```sh
+sudo pacman -S samba manjaro-settings-samba # 安装sam
+smbclient -L //SHAFISH/ -U share -m SMB2 # 扫描//SHAFISH计算机上的所有共享文件夹
+输入share用户的密码 # 输入share用户的密码
+sudo mkdir /dev/share   # linux下创建共享文件夹挂载点
+vim /etc/fstab # 添加共享文件夹的关于文件编码的配置
+## //window主机ip地址/需要共享的文件夹名称 创建的linux挂载点 cifs defaults,user=window共享用户名,password=window共享密码,_netdev,vers=3.0 0 0
+//192.168.0.108/share /dev/share cifs defaults,user=share,password=share,_netdev,vers=3.0 0 0
+sudo mount -a ##读取配置文件重新挂载
+df -Th ## 查看挂载情况
+cd /dev/share ## window共享文件夹内容
 ```
