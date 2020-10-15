@@ -287,3 +287,26 @@ sudo mount -a ##读取配置文件重新挂载
 df -Th ## 查看挂载情况
 cd /dev/share ## window共享文件夹内容
 ```
+
+## git命令中文乱码
+```sh
+git config --global core.quotepath false
+```
+
+## 安装nodejs
+- 1.安装脚本
+```sh
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+```
+- 2.配置环境
+```sh
+# 在.zshrc或者.bashrc末尾添加
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+```
+- 打开终端输入nvm验证
+- 3.查看nodejs版本：`nvm ls-remote`  
+- 4.下载稳定版本这里是v12.19.0：`nvm install v12.19.0`
+- 5.ok安装完成！！
+参考：https://ostechnix.com/install-node-js-linux/
+淘宝镜像：https://blog.csdn.net/qq_36410795/article/details/86485595  ->`npm config set registry=https://registry.npm.taobao.org`
