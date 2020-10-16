@@ -20,7 +20,7 @@ https://gitee.com/shafish/ToolMan/blob/master/manjaro_i3wm/i3-user-guide.md#%E5%
 - README.md  # 首页 站点根页面
 - .nojeyll
 
-### 5.1Sidebar侧边栏
+### 5.1 Sidebar侧边栏
 > 其实侧边栏默认已经开启了的，我们重写侧边栏当然是想自定义一下侧边栏的跳转条目la
 
 首先你需要知道侧边栏对应的markdown文件名为：`_sidebar.md` （不要写错了哟）
@@ -90,7 +90,165 @@ ok，你已经入门如何给docsify文档添加需要的侧边栏条目lie，�
 
 下面进入导航栏的设置
 
-### 5.2navbar导航栏
+### 5.2 navbar导航栏
+跟侧边栏需要编写`_sidebar.md`相似，添加导航栏也同样需要编写一个叫`_navbar.md`的markdown文件
 
-to be continue!!
+- 5.2.1配置文件开启导航拦开关
+`loadNavbar: true`
 
+- 5.2.2需求：给导航栏添加一个中英文显示开关
+既然导航栏跟`_navbar.md`相关，那我们按照上面需求来编写该文件吧：
+
+在docs根目录下创建一个`_navbar.md`文件，编写以下内容
+```md
+* [chinese](/)
+* [english](/en/)
+```
+`/`表示当前docs根目录
+`/en/`表示当前docs根目录下的en文件夹，这个文件夹我们之前还没有创建，尝试创建`docs/en/`后创建一个首页`README.md`写些内容后看看效果怎么样：
+
+![](./imgs/docsify/DeepinScreenshot_select-area_20201016224722.png)
+
+![](./imgs/docsify/DeepinScreenshot_select-area_20201016224827.png)
+![](./imgs/docsify/DeepinScreenshot_select-area_20201016224845.png)
+
+可以看到点击chinese显示的是根目录下的内容，而点击english则显示根目录下`en`文件夹的内容。
+
+- 5.2.3折叠导航栏条目
+把导航栏的条目进行一个分类怎么样？
+```md
+* translate
+
+    * [chinese](/)
+    * [english](/en/)
+```
+再看看效果：
+![](./imgs/docsify/DeepinScreenshot_select-area_20201016230609.png)
+
+完美
+
+- 5.2.4使用国旗来表示国家
+用文字表示国家-表示有点单调，我们下面来使用docsify的`emoji`插件来获取国家的国旗
+
+  - 在配置文件中引入emoji插件就可以直接在markdown文件中直接使用了，很方便：
+  ```md
+  <!--index.html-->
+  <body>
+    <div id="app">那么猴急干嘛</div>
+    <script>
+      window.$docsify = {      
+        name: 'Docify文档使用教程',
+        loadSidebar: true,
+        subMaxLevel: 3,
+        loadNavbar: true
+      }
+    </script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+  </body>
+  ```
+  引入了：`<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>`
+
+  - `_navbar.md`中使用
+  ```md
+  * translate
+
+    * [:cn:](/)
+    * [:us:, :uk:](/en/)
+  ```
+
+来看看效果吧：
+![](./imgs/docsify/DeepinScreenshot_select-area_20201016231416.png)
+
+基本的导航栏设置你就学会了哟。中场休息一下吧！！
+
+### 5.3 conver欢迎页面
+docsify的欢迎页面是个啥，先来看看效果：
+![](./imgs/docsify/DeepinScreenshot_select-area_20201017000657.png)
+
+经过上面`_sidebar` `_navbar`这个两个功能设置，相信你已经熟悉docsify添加页面的套路了：`在配置文件中开启对应开关`+`创建对应文件`。
+
+毫无疑问，添加docsify欢迎页的套路也是一毛一样的。
+
+- 5.3.1配置文件开启欢迎页开关
+`coverpage: true`
+
+- 5.3.2编写`_coverpage.md`欢迎页文件
+```md
+# docsify文档编写计划 <small>1.0</small>
+
+> 只是官网的一个翻译、一个实操的翻译.
+
+- 一个木得感情的翻译文档
+- 一个niupi的翻译文档
+- 一个没有废话的翻译文档（因为通篇都是废话）
+
+[GitHub](https://gitee.com/shafish/ToolMan/blob/master/Docsify%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3.md)
+[Get Started](#Headline)
+```
+
+来看看效果：
+![](./imgs/docsify/DeepinScreenshot_select-area_20201017002136.png)
+
+有点意思咧，[Get Started](#Headline)跳转的`#Headline`是根目录下的README.md的一级标题。
+
+官方文档还有关于各目录下的`_coverpage.md`设置，但个人感觉只显示项目根目录下一个欢迎页就可以了，需要设不同目录滴盆友请看看官方文档。
+
+欢迎页的设置就这么简单的完成了！！
+
+### 5.4 Docsify的配置项介绍
+这里的配置项是指`index.html` `<script>`js脚本中设置的内容。下面输出一个我们前面配置的所有内容：
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
+</head>
+<body>
+  <div id="app">那么猴急干嘛，人家还没准备好呢</div>  <!--内容加载完成前，浏览器页面显示的内容-->
+  <script>
+    window.$docsify = {      
+      name: 'Docify文档使用教程',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      loadNavbar: true,
+      coverpage: true
+    }
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script> <!--docsify模块-->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script> <!--docsify emoji组件-->
+</body>
+</html>
+```
+下面慢慢来一个个介绍：
+- `<div id="app">内容</div>`：body标签就这一个容器可以装显示内容，毫无疑问，我们编写的markdown文件最终要加载到这个div标签体中。
+- `id`：默认如果值为app，docsify会自动绑定$docsify对象，但是我们改为`id="main"` `id="shafish"` `id="帅比"` 行不行？使用`el`跟`$docsify对象`绑定即可。这也是vue的入门用法。
+ - `el`:把上面`index.html`文件body标签改为以下内容：（只改了绑定的id值，最终显示的效果也是一毛一样的）
+ ```html
+ <body>
+  <div id="帅比">那么猴急干嘛，人家还没准备好呢</div>
+  <script>
+    window.$docsify = {      
+      el: '#帅比',
+      name: 'Docify文档使用教程',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      loadNavbar: true,
+      coverpage: true
+    }
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+</body>
+</html>
+ ```
+ - `name`：docsify文档的文档主标题（文档最左上方显示的标题）
+ - `loadSidebar`：开启侧边栏
+ - `subMaxLevel`：在侧边栏中显示多级标题（使用数字表示显示多少层级标题）
+ - `loadNavbar`：开启导航栏
+ - `coverpage`：开启欢迎页
