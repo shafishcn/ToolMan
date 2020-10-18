@@ -226,9 +226,9 @@ docsify的欢迎页面是个啥，先来看看效果：
 </html>
 ```
 下面慢慢来一个个介绍：
-- `<div id="app">内容</div>`：body标签就这一个容器可以装显示内容，毫无疑问，我们编写的markdown文件最终要加载到这个div标签体中。
-- `id`：默认如果值为app，docsify会自动绑定$docsify对象，但是我们改为`id="main"` `id="shafish"` `id="帅比"` 行不行？使用`el`跟`$docsify对象`绑定即可。这也是vue的入门用法。
- - `el`:把上面`index.html`文件body标签改为以下内容：（只改了绑定的id值，最终显示的效果也是一毛一样的）
+- 1.`<div id="app">内容</div>`：body标签就这一个容器可以装显示内容，毫无疑问，我们编写的markdown文件最终要加载到这个div标签体中。
+- 2.`id`：默认如果值为app，docsify会自动绑定$docsify对象，但是我们改为`id="main"` `id="shafish"` `id="帅比"` 行不行？使用`el`跟`$docsify对象`绑定即可。这也是vue的入门用法。
+- 3.`el`:把上面`index.html`文件body标签改为以下内容：（只改了绑定的id值，最终显示的效果也是一毛一样的）
  ```html
  <body>
   <div id="帅比">那么猴急干嘛，人家还没准备好呢</div>
@@ -247,8 +247,81 @@ docsify的欢迎页面是个啥，先来看看效果：
 </body>
 </html>
  ```
- - `name`：docsify文档的文档主标题（文档最左上方显示的标题）
- - `loadSidebar`：开启侧边栏
- - `subMaxLevel`：在侧边栏中显示多级标题（使用数字表示显示多少层级标题）
- - `loadNavbar`：开启导航栏
- - `coverpage`：开启欢迎页
+- 4.`name`：docsify文档的文档主标题（文档最左上方显示的标题）
+- 5.`loadSidebar`：开启侧边栏
+- 6.`subMaxLevel`：在侧边栏中显示多级标题（使用数字表示显示多少层级标题）
+- 7.`loadNavbar`：开启导航栏
+- 8.`coverpage`：开启欢迎页
+- 9.`externalLinkTarget`：markdown文件中链接的跳转方式：_blank
+- 10.`requestHeaders`:请求头内容
+- 11.`notFoundPage`：设置404内容，对应`_404.md`文件
+
+> https://docsify.js.org/#/configuration
+
+### 5.5设置docsify显示主题
+docsify默认提供的主题是头文件中的：`<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">`，更换主题时只需要替换该文件即可。
+```js
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/buble.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/dark.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/pure.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-defaults.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+```
+比如theme-simple-dark.css：
+![](./imgs/docsify/DeepinScreenshot_select-area_20201018180118.png)
+
+### 5.6Docsify中常见的插件
+- 全文搜索
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+
+- 图片缩小放大
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+使用![](image.png ":no-zoom") 排除
+
+- 代码点击复制
+<script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+
+- 上一页/下一页
+<script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+
+> ps 选一个合适的主题直接使用即可，主题包含合适的插件(https://docsify.js.org/#/awesome?id=plugins)，再选择适合的插件安装
+
+### 5.7语法高亮和markdown特别标记
+`<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>`
+https://cdn.jsdelivr.net/npm/prismjs@1/components/
+
+- 提示符
+`!> 注意`
+`?> 一般提示`
+
+- 任务列表
+```md
+- [ ] foo
+- bar
+- [x] baz
+- [] bam <~ not working
+  - [ ] bim
+  - [ ] lim
+```
+- 设置标题id
+```
+### Hello, world! :id=特别id
+```
+
+- 缩放/展开列表
+```md
+<details>
+<summary>字母（点击展开）</summary>
+
+- Abc
+- Abc
+
+</details>
+```
+
+![](./imgs/docsify/DeepinScreenshot_select-area_20201018191935.png)
+
+### 5.8Docsify文档的部署访问
+跟静态博客类似，把包含index.html文件的docs文件夹直接放到站点下即可。
