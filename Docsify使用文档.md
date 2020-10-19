@@ -239,7 +239,8 @@ docsify的欢迎页面是个啥，先来看看效果：
       loadSidebar: true,
       subMaxLevel: 3,
       loadNavbar: true,
-      coverpage: true
+      coverpage: true,
+      auto2top: true,
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
@@ -253,8 +254,23 @@ docsify的欢迎页面是个啥，先来看看效果：
 - 7.`loadNavbar`：开启导航栏
 - 8.`coverpage`：开启欢迎页
 - 9.`externalLinkTarget`：markdown文件中链接的跳转方式：_blank
-- 10.`requestHeaders`:请求头内容
+- 10.`requestHeaders`:请求头内容 'x-token': 'xxx'这些
 - 11.`notFoundPage`：设置404内容，对应`_404.md`文件
+- 12.`auto2top`:文件的访问路径修改后自动跳转到文章顶部
+- 13.`homepage`：文件夹的默认显示内容，如果不设置该值，默认显示`README.md`中的内容
+- 14.`basePath`:设置文件的访问域名，可以指定文件的访问路径，比如你的docsify文件存放在`https://shafish.cn/docs`目录下，该目录下包含README.md、test.md等等文件，你就可以直接设置basepath为：`https://shafish.cn/docs`，否则默认为当前根目录。（该配置可提供动态加载别的目录下文件的访问）
+- 15.`relativePath`:开启相对路径，为`true`后可以在路由中使用`..`表示上层目录，`.`表示当前目录
+- 16.`logo`:可以在侧边栏设置一个文档的图标
+- 17.`themeColor: '#3F51B5'`:可以设置主题的颜色
+- 18.`alias`：可以设置路由的别名，在本地访问路径过长或者文件名过长的情况下设置一个唯一值。
+- 19.`autoHeander`：为true可以在右边内容的顶部显示文件名作为开头。
+- 20.`mergeNavbar`：在小屏下侧边栏和导航栏到合并在一起显示
+- 21.`formatUpdated`说可以显示文件的修改时间（没看到显示在哪）
+- 22.`noCompileLinks: ['/foo', '/bar/.*'],`：表示/foo和/bar文件夹下的所有文件中的链接不经过docsify hash等处理 https://github.com/docsifyjs/docsify/issues/203
+
+- 23.`topMargin: 0`，0代表几乎贴到浏览器书签栏，可以设置为10等间隔一下
+![](./imgs/docsify/DeepinScreenshot_select-area_20201019234215.png)
+
 
 > https://docsify.js.org/#/configuration
 

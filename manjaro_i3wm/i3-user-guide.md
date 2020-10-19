@@ -310,3 +310,6 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 - 5.ok安装完成！！
 参考：https://ostechnix.com/install-node-js-linux/
 淘宝镜像：https://blog.csdn.net/qq_36410795/article/details/86485595  ->`npm config set registry=https://registry.npm.taobao.org`
+
+## keynav
+键盘代替鼠标
