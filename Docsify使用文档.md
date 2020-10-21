@@ -304,29 +304,29 @@ docsify默认提供的主题是头文件中的：`<link rel="stylesheet" href="/
 
 > ps 选一个合适的主题直接使用即可，主题包含合适的插件(https://docsify.js.org/#/awesome?id=plugins)，再选择适合的插件安装
 
-### 5.7语法高亮和markdown特别标记
-`<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>`
-https://cdn.jsdelivr.net/npm/prismjs@1/components/
+### 5.7语法高亮和markdown使用设置
+- 高亮
+docsify文档支持多种语言高亮处理，只需要加入相应语言的js文件即可，比如bash,在配置文件中加入`<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>`  即可设置bash高亮。
+语言对于的js引用地址：https://cdn.jsdelivr.net/npm/prismjs@1/components/
 
-- 提示符
+- markdown提示符
 `!> 注意`
 `?> 一般提示`
 
-- 任务列表
+- markdown任务列表
 ```md
 - [ ] foo
 - bar
 - [x] baz
-- [] bam <~ not working
+- [ ] bam <~ not working
   - [ ] bim
   - [ ] lim
 ```
-- 设置标题id
+- markdown设置标题id
 ```
 ### Hello, world! :id=特别id
 ```
-
-- 缩放/展开列表
+- markdown缩放/展开列表
 ```md
 <details>
 <summary>字母（点击展开）</summary>
@@ -339,5 +339,114 @@ https://cdn.jsdelivr.net/npm/prismjs@1/components/
 
 ![](./imgs/docsify/DeepinScreenshot_select-area_20201018191935.png)
 
+- markdown文件渲染
+docsify默认使用[marked](https://github.com/markedjs/marked)来将markdown文件解析为html
+
 ### 5.8Docsify文档的部署访问
-跟静态博客类似，把包含index.html文件的docs文件夹直接放到站点下即可。
+- 跟静态博客类似，把包含index.html文件的docs文件夹直接放到站点下即可。
+- 存放在github中：https://docsify.js.org/#/deploy
+
+### 5.9 PWA（浏览器app）
+文档离线功能，可以在断开wifi后刷新查看效果可以在在docs根目录下创建`sw.js`文件，写入以下内容：
+```js
+/* ===========================================================
+ * docsify sw.js
+ * ===========================================================
+ * Copyright 2016 @huxpro
+ * Licensed under Apache 2.0
+ * Register service worker.
+ * ========================================================== */
+
+const RUNTIME = 'docsify'
+const HOSTNAME_WHITELIST = [
+  self.location.hostname,
+  'fonts.gstatic.com',
+  'fonts.googleapis.com',
+  'cdn.jsdelivr.net'
+]
+
+// The Util Function to hack URLs of intercepted requests
+const getFixedUrl = (req) => {
+  var now = Date.now()
+  var url = new URL(req.url)
+
+  // 1. fixed http URL
+  // Just keep syncing with location.protocol
+  // fetch(httpURL) belongs to active mixed content.
+  // And fetch(httpRequest) is not supported yet.
+  url.protocol = self.location.protocol
+
+  // 2. add query for caching-busting.
+  // Github Pages served with Cache-Control: max-age=600
+  // max-age on mutable content is error-prone, with SW life of bugs can even extend.
+  // Until cache mode of Fetch API landed, we have to workaround cache-busting with query string.
+  // Cache-Control-Bug: https://bugs.chromium.org/p/chromium/issues/detail?id=453190
+  if (url.hostname === self.location.hostname) {
+    url.search += (url.search ? '&' : '?') + 'cache-bust=' + now
+  }
+  return url.href
+}
+
+/**
+ *  @Lifecycle Activate
+ *  New one activated when old isnt being used.
+ *
+ *  waitUntil(): activating ====> activated
+ */
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim())
+})
+
+/**
+ *  @Functional Fetch
+ *  All network requests are being intercepted here.
+ *
+ *  void respondWith(Promise<Response> r)
+ */
+self.addEventListener('fetch', event => {
+  // Skip some of cross-origin requests, like those for Google Analytics.
+  if (HOSTNAME_WHITELIST.indexOf(new URL(event.request.url).hostname) > -1) {
+    // Stale-while-revalidate
+    // similar to HTTP's stale-while-revalidate: https://www.mnot.net/blog/2007/12/12/stale
+    // Upgrade from Jake's to Surma's: https://gist.github.com/surma/eb441223daaedf880801ad80006389f1
+    const cached = caches.match(event.request)
+    const fixedUrl = getFixedUrl(event.request)
+    const fetched = fetch(fixedUrl, { cache: 'no-store' })
+    const fetchedCopy = fetched.then(resp => resp.clone())
+
+    // Call respondWith() with whatever we get first.
+    // If the fetch fails (e.g disconnected), wait for the cache.
+    // If there’s nothing in cache, wait for the fetch.
+    // If neither yields a response, return offline pages.
+    event.respondWith(
+      Promise.race([fetched.catch(_ => cached), cached])
+        .then(resp => resp || fetched)
+        .catch(_ => { /* eat any errors */ })
+    )
+
+    // Update the cache with the version we fetched (only for ok status)
+    event.waitUntil(
+      Promise.all([fetchedCopy, caches.open(RUNTIME)])
+        .then(([response, cache]) => response.ok && cache.put(event.request, response))
+        .catch(_ => { /* eat any errors */ })
+    )
+  }
+})
+```
+
+然后在index.html中添加以下内容：
+```js
+  if (typeof navigator.serviceWorker !== 'undefined') {
+    navigator.serviceWorker.register('sw.js')
+  }
+```
+
+### 5.10 markdown中的嵌入式标签:video, audio, iframes, code， markdown
+> 只需要在末尾添加 `':include'`即可，docsify会自动识别资源加载，识别资源包括：`.html` `.htm` `.markdown` `.md` `.mp3` `.mp4` `.ogg`
+  - 嵌入markdown内容：
+  `[embed](_media/embed.md ':include')`
+  - 嵌入视频：
+  `[the alu](https://down.shafish.cn/7.mp4 ':include')`
+
+### 5.11 SSR 服务端渲染[待续]
+安装`now` 和 `docsify-cli`模块

@@ -27,6 +27,8 @@ sudo chmod a+rx /usr/local/bin/youtube-dl
     - 列出所有字幕：`youtube-dl --proxy socks5://127.0.0.1:1080/ --list-subs [url]`
     - 选择下载格式与语言：`youtube-dl --proxy socks5://127.0.0.1:1080/ --all-subs --skip-download [url]`
 
+- 合并音视频：`ffmpeg -i video.mp4 -i audio.wav -c:v copy -c:a aac -strict experimental output.mp4`
+
 - 烧字幕：
     - `ffmpeg -i xxx.vtt xxx.srt` [option]
     - `ffmpeg -i input.mp4 -vf subtitles='xxx.srt' output.mp4`
