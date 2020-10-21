@@ -7,9 +7,15 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css">
+
 </head>
 <body>
   <div id="帅比">那么猴急干嘛，人家还没准备好呢</div>
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      navigator.serviceWorker.register('sw.js')
+    }
+  </script>
   <script>
     window.$docsify = {      
       el: '#帅比',
@@ -19,9 +25,10 @@
       loadNavbar: true,
       coverpage: true,
       mergeNavbar: true,
-      topMargin: 90,
+      topMargin: 0,
       search: 'auto',
-
+      formatUpdated: '{MM}/{DD} {HH}:{mm}',
+      noCompileLinks: ['/cao'],
       // complete configuration parameters
       search: {
         maxAge: 86400000, // Expiration time, the default one day
@@ -62,7 +69,6 @@
         // the matching substring will be used to identify the index
         pathNamespaces: /^(\/(zh-cn|ru-ru))?(\/(v1|v2))?/
       }
-      
 
     }
   </script>
@@ -71,6 +77,5 @@
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
-  
 </body>
 </html>
