@@ -194,10 +194,10 @@ sudo pacman -S xorg-xprop
 assign [class="(?i)Chrome"] $ws2
  ```
 
-## aria2
+## 二十、aria2
 https://zhuanlan.zhihu.com/p/77336764
 
-## minio和jellyfin
+## 二十一、minio和jellyfin
 ```
 docker run -p 9000:9000 --name minio -v /data/minio/data:/data -v /data/minio/config:/root/.minio -d --restart unless-stopped minio/minio server /data
 ```
@@ -209,7 +209,22 @@ docker run -d -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v
 ```
 docker create --name=jellyfin -e PUID=1000 -e PGID=1000 -p 8096:8096 -v /data/jellyfin/config:/config -v /data/jellyfin/cache:/cache -v /run/media/graham/In-Reserve/video/b:/data/b  -v /run/media/graham/In-Reserve/video/t:/data/t -v /run/media/graham/In-Reserve/video/video:/data/video -v /run/media/graham/In-Reserve/video/new:/data/new -v /run/media/graham/In-Reserve/资料:/data/codding --restart unless-stopped linuxserver/jellyfin
 ```
-## m3u8
+
+```shell
+docker run -d \
+  --name=jellyfin \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=Europe/London \
+  -p 8096:8096 \
+  -v /data/jellyfin/config:/config \
+  -v /data/jellyfin/cache:/cache \
+  -v /mnt/veracrypt1:/data/veracrypt \
+  --restart unless-stopped \
+  linuxserver/jellyfin
+```
+
+## 二十二、m3u8
 ```
 ffmpeg -i 本地视频地址 -y -c:v libx264 -strict -2 转换视频.mp4
 ffmpeg -y -i 本地视频.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 转换视频.ts
@@ -218,7 +233,7 @@ ffmpeg -i 本地视频.ts -c copy -map 0 -f segment -segment_list 视频索引.m
 
 https://segmentfault.com/q/1010000007235579
 
-## 二十:睡眠后断网的情况
+## 二十三:睡眠后断网的情况
 卸载网卡驱动:modprobe -r r8169
 重装驱动:modprobe r8169
 
@@ -226,14 +241,14 @@ https://segmentfault.com/q/1010000007235579
 
 docker run -u root -d -p 49080:8080 -p 50000:50000 -v /data/jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean
 
-## QQ:http://www.waimaosns.cc/arch-linux-i3wm-run-deepin-qq-tim/
+## 二十四、QQ:http://www.waimaosns.cc/arch-linux-i3wm-run-deepin-qq-tim/
 或者安装qq官方-qqlinux
 - 图标
 yay -S la-capitaine-icon-theme
 
 nohup /usr/lib/gsd-xsettings > /dev/null 2>&1 &
 
-## 风格主题
+## 二十五、风格主题
 https://minifullc.github.io/2018/03/20/Arch%20Linux%20%E7%B3%BB%E7%BB%9F%E9%A2%9C%E8%89%B2%E9%85%8D%E7%BD%AE/
 
 sudo pacman -S  qt5-styleplugins qt5ct
@@ -241,14 +256,14 @@ sudo pacman -S dconf editor
 
 打开lxappearance设置
 
-## git客户端
+## 二十六、git客户端
 - 私有仓库收费:gitkraken
 - githubDesktop:https://github.com/shiftkey/desktop
 
-## gnome
+## 二十七、gnome
 https://wiki.manjaro.org/index.php/Install_Desktop_Environments#Gnome_3
 
-## 本地聊天室
+## 二十八、本地聊天室
 https://github.com/yinxin630/fiora/blob/master/doc/README.ZH.md
 
 ```
@@ -259,10 +274,10 @@ https://github.com/yinxin630/fiora/blob/master/doc/README.ZH.md
 启动fiora docker run --name fiora -p 9200:9200 --network fiora-network -e Database=mongodb://fioradb:27017/fiora suisuijiang/fiora
 ```
 
-## 蓝牙模块包
+## 二十九、蓝牙模块包
 sudo pacman -S bluez bluez-utils
 
-## ssh工具
+## 三十、ssh工具
 ```shell
 # 收费版提供sftp功能,待观察购买
 ssh免费: sudo snap install termius-app
@@ -272,7 +287,7 @@ rm -f finalshell_install_linux.sh ;wget www.hostbuf.com/downloads/finalshell_ins
 filezilla
 ```
 
-## 访问window共享文件
+## 三十一、访问window共享文件
 - window系统新建share用户，创建共享文件夹，赋予share用户
 - linux设置
 ```sh
@@ -288,12 +303,12 @@ df -Th ## 查看挂载情况
 cd /dev/share ## window共享文件夹内容
 ```
 
-## git命令中文乱码
+## 三十二、git命令中文乱码
 ```sh
 git config --global core.quotepath false
 ```
 
-## 安装nodejs
+## 三十三、安装nodejs
 - 1.安装脚本
 ```sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
@@ -311,5 +326,9 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 参考：https://ostechnix.com/install-node-js-linux/
 淘宝镜像：https://blog.csdn.net/qq_36410795/article/details/86485595  ->`npm config set registry=https://registry.npm.taobao.org`
 
-## keynav
+## 三十四、keynav
 键盘代替鼠标
+
+## 三十五、cdn查询工具
+dig xxx
+pacman -S bind-tools
