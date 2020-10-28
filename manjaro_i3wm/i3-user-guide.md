@@ -332,3 +332,8 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 ## 三十五、cdn查询工具
 dig xxx
 pacman -S bind-tools
+
+## 三十六、删除提交中存在的大文件
+`git filter-branch --tree-filter 'rm -f 文件名' HEAD`
+
+> ref：https://juejin.im/post/6855129007802744840
