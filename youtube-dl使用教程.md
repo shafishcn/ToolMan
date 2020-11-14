@@ -35,4 +35,14 @@ sudo chmod a+rx /usr/local/bin/youtube-dl
 - 分片
     - `ffmpeg -y -i input.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 转换视频.ts`    
     - `ffmpeg -i 转换视频.ts -c copy -map 0 -f segment -segment_list 视频索引.m3u8 -segment_time 5 前缀-%03d.ts`
+
+youtube-dl --proxy socks5://127.0.0.1:1080/ -o 'Network-Connectors-Explained.%(ext)s' -f 248 https://www.youtube.com/watch?v=ktTtAQIvYkg
+
+https://www.youtube.com/watch?v=PVad0c2cljo
     
+ffmpeg -i Network-Connectors-Explained.mp4 -i Network-Connectors-Explained.m4a -c:v copy -c:a aac -strict experimental networkConnectorsExplained.mp4
+
+ffmpeg -y -i networkConnectorsExplained.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb networkConnectorsExplained.ts
+
+
+ffmpeg -i networkConnectorsExplained.ts -c copy -map 0 -f segment -segment_list networkConnectorsExplained.m3u8 -segment_time 40 networkConnectorsExplained-%03d.ts
