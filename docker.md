@@ -1,3 +1,6 @@
+## 零、安装
+
+
 ## 一、docker名词说明
 - 镜像image
 相当于Java中的类文件，dockers可以通过镜像来创建多个不同的容器。
@@ -343,3 +346,15 @@ docker push shafish/fishajavaenv
 容器镜像服务（基操）：https://cr.console.aliyun.com/cn-hangzhou/instances/repositories
 
 ![](https://cdn.shafish.cn/imgs/docker/docker.png)
+
+
+## jellyfin更新
+
+docker run -d --name=jellyfin --env=PGID=1000 --env=TZ=Europe/London --env=PUID=1000 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --env=HOME=/root --env=LANGUAGE=en_US.UTF-8 --env=LANG=en_US.UTF-8 --env=TERM=xterm --env=NVIDIA_DRIVER_CAPABILITIES=compute,video,utility --volume=/data/jellyfin/config:/config --volume=/data/jellyfin/cache:/cache --volume=/mnt/veracrypt8:/data/veracrypt --volume=/mnt/veracrypt9:/data/veracrypt2 --volume=/config -p 8096:8096 --expose=8920 --restart=unless-stopped linuxserver/jellyfin
+
+## 查看docker运行容器的启动命令
+runlike:https://blog.csdn.net/qq_35462323/article/details/101607062
+
+## 本地磁力资源下载
+docker run --name cloudTorrent -d -p 4000:3000 -v /mnt/veracrypt9/cloudTorrent:/downloads --restart=unless-stopped  jpillora/cloud-torrent
+
