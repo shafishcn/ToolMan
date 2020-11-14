@@ -337,3 +337,12 @@ pacman -S bind-tools
 `git filter-branch --tree-filter 'rm -f 文件名' HEAD`
 
 > ref：https://juejin.im/post/6855129007802744840
+
+## 三十七、jenkins
+
+## 三十八、输入法相关快捷键（自定义）
+- 半角/全角：ctrl+.
+- 虚拟键盘：ctrl+alt+b
+- 下一页：.
+- 上一页：,
+- 输入法切换：shift/ctrl+space
