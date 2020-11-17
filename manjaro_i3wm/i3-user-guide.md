@@ -346,3 +346,13 @@ pacman -S bind-tools
 - 下一页：.
 - 上一页：,
 - 输入法切换：shift/ctrl+space
+
+## 三十九、ssh配置密钥登录
+vim ~/.ssh/config
+```
+Host tffats
+HostName 服务器ip
+Port ssh端口
+User 登录服务器的用户名
+IdentityFile pem密钥文件(.pem文件)
+```
