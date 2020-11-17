@@ -1,6 +1,5 @@
 ## 零、安装
 
-
 ## 一、docker名词说明
 - 镜像image
 相当于Java中的类文件，dockers可以通过镜像来创建多个不同的容器。
@@ -358,3 +357,54 @@ runlike:https://blog.csdn.net/qq_35462323/article/details/101607062
 ## 本地磁力资源下载
 docker run --name cloudTorrent -d -p 4000:3000 -v /mnt/veracrypt9/cloudTorrent:/downloads --restart=unless-stopped  jpillora/cloud-torrent
 
+## Jenkins
+```
+sudo mkdir -p /var/data/jenkins_home
+
+docker run -u root -d -p 10240:8080 -p 10241:50000 \
+-v /var/data/jenkins_home:/var/jenkins_home \
+-v /opt/jdk8u272-ga:/usr/local/jdk1.8 \
+-v /opt/apache-maven-3.6.3:/usr/local/maven3 \
+-v /usr/bin/git:/usr/bin/git \
+-v /etc/localtime:/etc/localtime \
+-v /var/run/docker.sock:/var/run/docker.sock \
+--privileged=true --restart=always --name myjenkins jenkinsci/blueocean
+```
+
+- 修改加速：/var/data/jenkins_home/hudson.model.UpdateCenter.xml
+```xml
+<?xml version='1.1' encoding='UTF-8'?>
+<sites>
+  <site>
+    <id>default</id>
+    <url>https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</url>
+  </site>
+</sites>
+```
+- 查看登录密码：docker logs myjenkins或者cat /var/data/jenkins_home/secrets/initialAdminPassword
+
+> 如果登录提示offine，则修改加速后再访问xxx:10240/restart或者参考下面 网络问题 步骤解决
+
+## 网络问题
+```shell
+# wget https://cdn.shafish.cn/bridge-utils-1.6.tar.xz
+tar -xf bridge-utils-1.6.tar.xz
+cd bridge-utils-1.6
+yum install autoconf
+autoconf
+./configure --prefix=/usr
+make
+make install
+```
+```shell
+systemctl start firewalld #启动防火墙服务
+firewall-cmd --add-masquerade --permanent     ##开启IP地址转发（一直生效）
+firewall-cmd --reload         ##重载防火墙规则，使之生效
+```
+```shell
+systemctl stop docker
+iptables -t nat -F POSTROUTING
+ip link set dev docker0 down
+brctl delbr docker0
+systemctl start docker
+```
