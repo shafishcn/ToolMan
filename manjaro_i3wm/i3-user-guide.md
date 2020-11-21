@@ -127,6 +127,9 @@ https://mariadb.org/authentication-in-mariadb-10-4/
 alter table user_auth add `verification` tinyint(2) unsigned DEFAULT '1' COMMENT '账号是否通过验证。1已经验证；2没有被验证。提供手机验证码默认已经验证，邮箱注册则默认没被验证';
 alter table user_auth add `id_verification` tinyint(2) DEFAULT NULL COMMENT '是否通过了身份证验证。1通过；2没通过';
 
+
+> tips：window下创建USER环境变量值为root后可以在终端直接使用`mysql -p`登录
+
 ## 十四、vscode插件
 > https://zhuanlan.zhihu.com/p/35176928
 
@@ -356,3 +359,5 @@ Port ssh端口
 User 登录服务器的用户名
 IdentityFile pem密钥文件(.pem文件)
 ```
+
+## 四十、i3中经常使用的一些快捷键
