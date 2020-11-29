@@ -361,3 +361,6 @@ IdentityFile pem密钥文件(.pem文件)
 ```
 
 ## 四十、i3中经常使用的一些快捷键
+
+## 四十一、qq
+yay -S com.qq.tim.spark
