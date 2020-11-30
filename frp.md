@@ -8,8 +8,8 @@
     - 用过服务器的同学都知道，远程终端登录
 - 远程WEB
     - 被控制端（比如家里的电脑）运行一个web程序（php/vue/其它）就可以通过远程tcp进行访问。
-.....
-简而言之就是一个让你在外面也可以访问你家里设备的东吸。至于选择frp前面也说了，简单小白，另外就是ngrok1.7+不开源咧，没什么好说的。
+
+简而言之就是一个让你在外面也可以访问你家里设备的东吸。至于为什么选择frp，前面也说了，简单小白，另外就是ngrok1.7+不开源咧（技术人开始搞小钱钱），没什么好说的。
 
 这里是FRP的官方文档说明--》[gofrp](https://gofrp.org/docs/) ，下面开始尝试在阿里云上搭建`FRP`来进行rdp远程桌面吧，搭完后你就可以方便滴远程办公了哟。[微笑]
 
@@ -130,7 +130,7 @@ OK！被控制端（window）配置完成！！
     - 1.1 按`win+r`，输入`regedit`-打开注册表
     - 1.2更改`HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TerminalServer\Wds\rdpwd\Tds\tcp`下的`PortNumber`值为非`3389`，比如可以设置为`56527`
     - 1.3 更改`HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp`的`PortNumber`值为非`3389`，比如可以设置为`56527`
-    - 1.4 重启一下系统就阔以完成设置咧
+    - 1.4 重启系统后，设置`frpc.ini`中的`local_port`值，再启动即可。
 
 ### 2.设置强token
 > 在服务器frp启动的配置文件中设置高强度token
@@ -138,7 +138,7 @@ OK！被控制端（window）配置完成！！
 数字+字母+符号+30位长度起步（嫌麻烦就直接截取ssh公钥的某段值再往中间插入几个随机数即可）
 
 ### 3.设置强帐号密码
-> 被控制端登录使用的帐号密码`必须`要设置而且`一定！！`不能是弱帐号、弱密码！！
+> 被控制端（也就是你的window电脑）登录使用的帐号密码`必须`要设置而且`一定！！`不能是弱帐号、弱密码！！
 
 ### 4.使用stcp类型
 > 如果使用的是tcp类型，可以确保特定的控制端才能连接到被控制端。
@@ -153,7 +153,7 @@ token = fafaefajfoafjo # 服务器上frp上设置的token
 [RDP]
 # type = tcp
 type = stcp
-# 只有 sk 一致的用户才能访问到此服务
+# 只有 sk 一致的用户才能访问到此服务，设置复杂点
 sk = fafafafooghqog12342379759！@）（×&……%
 local_ip = 你电脑在内网ip（ipconfig查看）
 # 3389默认远程桌面使用的端口
@@ -161,7 +161,7 @@ local_ip = 你电脑在内网ip（ipconfig查看）
 local_port = 3389
 remote_port = 7001
 ```
-> 可以看到跟之前的被控制端`type`的值被改成了`stcp`，而且多了`sk`参数！
+> 可以看到跟之前的被控制端相比：`type`的值被改成了`stcp`，而且多了`sk`参数！
 
 - 控制端设置
 > 没错，使用stcp后，之前控制端不需要运行frp程序的，这次也需要运行frp才可以进行连接。
