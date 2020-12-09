@@ -53,6 +53,7 @@ systemctl start frps
 firewall-cmd --zone=public --query-port=7007/tcp  # 查询对应的端口是否开启
 firewall-cmd --zone=public --add-port=7000/tcp --permanent # 开启某个端口
 firewall-cmd --zone=public --add-port=7500/tcp --permanent # 开启某个端口
+firewall-cmd --zone=public --remove-port=9200/tcp --permanent # 关闭某个端口
 ```
 > 开完端口后，记得重启一下服务器哟
 
@@ -97,6 +98,28 @@ firewall-cmd --zone=public --add-port=7001/tcp --permanent # 开启某个端口
 - 6. 再去阿里云安全组辣里开放对应端口
 
 OK！被控制端（window）配置完成！！
+
+- 7. 开机自启动frp
+```shell
+# 下载winsw工具：点击下载其中的 WinSW.NET461.exe 文件
+https://github.com/winsw/winsw/releases
+```
+```shell
+# 编写winsw.xml文件
+<service>
+  <id>frp</id>
+  <name>frp</name>
+  <description>frp service</description>
+  <executable>frpc.exe</executable>
+  <arguments>-c frpc.ini</arguments>
+  <onfailure action="restart" delay="60 sec"/>
+  <onfailure action="restart" delay="120 sec"/>
+  <logmode>reset</logmode>
+</service>
+```2
+
+将`WinSW.NET461.exe`文件和`winsw.xml`放在`frp_xxx_windows_amd64`目录下，
+去`powershell`命令行中执行 `.\winsw install`安装frp服务，再运行`.\winsw start`命令启动frp服务
 
 ### Linux
 暂时略
@@ -192,3 +215,10 @@ bind_port = 6000
 > 使用`stcp`后，连接远程的地址被映射为了本地的ip:port，也就是`bind_addr`和`bind_port`中指定的`127.0.0.1:6000`
 
 >> 最后打开远程桌面或者remmina填入`127.0.0.1:6000`连接并输入帐号密码即可
+
+### 5. 开启传输加密与压缩
+```shell
+# 被控制端与控制端中加入以下设置：
+use_encryption = true
+use_compression = true
+```
