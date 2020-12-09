@@ -428,3 +428,41 @@ systemctl start docker
 https://www.moerats.com/archives/956/
 
 docker run --restart=always --name lstu -d -p 8080:8080 -v "$(pwd)/lstu.conf:/home/lstu/lstu.conf" -v "$(pwd)/lstu.db:/home/lstu/lstu.db" lstu
+
+## fiora
+docker pull mongo
+docker pull suisuijiang/fiora
+docker network create fiora-network
+docker run --name fioradb -d -p 27017:27017 --network fiora-network mongo
+docker run --name fiora -d -p 7799:7799 -v /opt/fiora/config/:/usr/app/fiora/fisha/  --network fiora-network -e Database=mongodb://fioradb:27017/fiora suisuijiang/fiora
+```shell
+# 在/opt/fiora/config目录下创建.env文件，内容如下：
+DefaultGroupName=tffats
+DisableCreateGroup=true
+DisableDeleteMessage=true
+Port=7799
+JwtSecret=xxxdsdaeqtqf
+DisableRegister=true
+```
+
+```shell
+# 进入fiora容器启动复制配置文件到fiora根目录中
+docker exec -it fiora /bin/bash
+# 复制fisha目录下的.env到fiora根目录
+cp fisha/.env ./
+# 退出，重启
+exit
+docker restart fiora
+```
+- 设置管理员
+    - `yarn script getUserId [username]`
+    - Administrator=xxid
+- 手动注册新用户
+    - `yarn script register [username] [password]`
+
+- 删除
+    - `yarn script deleteUser [id]`5fca63cf7bbce3001dfa3afb
+
+## 去广告adguardhome
+docker run --name adguardhome -v /data/adguardhome/work:/opt/adguardhome/work -v /data/adguardhome/conf:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p 68:68/udp -p 80:80/tcp -p 443:443/tcp -p 853:853/tcp -p 3000:3000/tcp -d --restart=unless-stopped adguard/adguardhome
+
