@@ -116,7 +116,7 @@ https://github.com/winsw/winsw/releases
   <onfailure action="restart" delay="120 sec"/>
   <logmode>reset</logmode>
 </service>
-```2
+```
 
 将`WinSW.NET461.exe`文件和`winsw.xml`放在`frp_xxx_windows_amd64`目录下，
 去`powershell`命令行中执行 `.\winsw install`安装frp服务，再运行`.\winsw start`命令启动frp服务
@@ -139,6 +139,8 @@ https://github.com/winsw/winsw/releases
     - 略
 - MicrosoftRemoteDesktop
     - 略
+
+![Remmina](./imgs/2020-12-16-003253_2560x1600_scrot.png)
 
 > 略表示本人暂时没有实际操作过或者操作非常简单赖得写
 >> 比较容易踩的坑：阿里云设置了对应的安全组而没有在服务器中开启对应端口（不要问为什么是容易踩的坑，问就是不知道[手动狗头]）
@@ -177,7 +179,7 @@ token = fafaefajfoafjo # 服务器上frp上设置的token
 # type = tcp
 type = stcp
 # 只有 sk 一致的用户才能访问到此服务，设置复杂点
-sk = fafafafooghqog12342379759！@）（×&……%
+sk = fafafafooghqog12342379759！@)(×&……%
 local_ip = 你电脑在内网ip（ipconfig查看）
 # 3389默认远程桌面使用的端口
 # 修改默认端口：https://blog.csdn.net/xishining/article/details/94683781
@@ -203,7 +205,7 @@ role = visitor
 # 要访问的 stcp 代理的名字，被控制端的portName，也就是被控制端[RDP]中的RDP
 server_name = RDP
 # 跟被控制端的sk值一致
-sk = fafafafooghqog12342379759！@）（×&……%
+sk = fafafafooghqog12342379759！@)(×&……%
 # 绑定本地端口用于访问 远程桌面 服务
 bind_addr = 127.0.0.1
 bind_port = 6000
