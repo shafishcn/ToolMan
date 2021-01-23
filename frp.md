@@ -54,8 +54,9 @@ firewall-cmd --zone=public --query-port=7007/tcp  # 查询对应的端口是否�
 firewall-cmd --zone=public --add-port=7000/tcp --permanent # 开启某个端口
 firewall-cmd --zone=public --add-port=7500/tcp --permanent # 开启某个端口
 firewall-cmd --zone=public --remove-port=9200/tcp --permanent # 关闭某个端口
+firewall-cmd --reload # 重启防火墙使配置生效
 ```
-> 开完端口后，记得重启一下服务器哟
+> 开完端口后，记得重启一下防火墙服务
 
 - 6. 再去阿里云安全组辣里开放对应端口
 
