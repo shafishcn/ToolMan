@@ -364,13 +364,36 @@ docker push shafish/fishajavaenv
 
 docker run -d --name=jellyfin --env=PGID=1000 --env=TZ=Europe/London --env=PUID=1000 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --env=HOME=/root --env=LANGUAGE=en_US.UTF-8 --env=LANG=en_US.UTF-8 --env=TERM=xterm --env=NVIDIA_DRIVER_CAPABILITIES=compute,video,utility --volume=/data/jellyfin/config:/config --volume=/data/jellyfin/cache:/cache --volume=/mnt:/data/veracrypt --volume=/config -p 8096:8096 --expose=8920 --restart=unless-stopped linuxserver/jellyfin
 
+docker run -d \
+  --name=jellyfin \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=Europe/London \
+  -p 8096:8096 \
+  -v /mnt/wd4t/docker/jellyfin/config:/config \
+  -v /mnt/wd4t/docker/jellyfin/cache:/cache \
+  -v /mnt/wd4t/video/ghs:/data/ghs \
+  -v /mnt/wd4t/docker/cloudTorrent/downloads:/data/cloud \
+  --restart unless-stopped \
+  linuxserver/jellyfin
+
+## filebrower
+docker run -d \
+--name=filebrower \
+-v /mnt/wd4t:/srv \
+-v /mnt/wd4t/docker/filebrowser/database.db:/etc/database.db \
+-v /mnt/wd4t/docker/filebrowser/filebrowserconfig.json:/etc/config.json \
+-p 4001:80 \
+--restart=unless-stopped \
+filebrowser/filebrowser
+
 ## 查看docker运行容器的启动命令
 runlike:https://blog.csdn.net/qq_35462323/article/details/101607062
 
 ## 本地磁力资源下载
 docker run --name cloudTorrent -d -p 4000:3000 -v /mnt/veracrypt9/cloudTorrent:/downloads --restart=unless-stopped  jpillora/cloud-torrent
 
-docker run --name simpleTorrent -d -p 4000:3000 -v /data/cloudTorrent/downloads:/downloads -v /data/cloudTorrent/torrents:/torrents --restart=unless-stopped boypt/cloud-torrent --port 3000 -a graham:xxxx
+docker run --name simpleTorrent -d -p 4000:3000 -v /mnt/wd4t/docker/cloudTorrent/downloads:/downloads -v /mnt/wd4t/docker/cloudTorrent/torrents:/torrents --restart=unless-stopped boypt/cloud-torrent --port 3000 -a graham:xxxx
 
 ## Jenkins
 ```
