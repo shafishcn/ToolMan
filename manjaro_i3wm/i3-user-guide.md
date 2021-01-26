@@ -187,7 +187,16 @@ proxychains4 curl myip.ipip.net
 再次ok
 > 因为使用的是trojan，只支持sock5，平时使用的wget，curl等都是htp_proxy，无法用sock5代理，而proxychain可以把http_proxy代理到socks5上。
 
-> 问题:docker pull镜像使用proxychain代理无效(待解决)
+> 问题:docker pull镜像使用proxychain代理无效(待解决) 换国内镜像就行
+
+### 直接使用包管理工具安装
+```shell
+sudo apt install proxychains-ng
+sudo vim /etc/proxychains4.conf
+最后一行修改为 `socks5  127.0.0.1 1080`
+```
+
+有时候dockercomponse使用阿里云加速拉取镜像时会发生莫名错误导致拉取不到镜像，此时尝试移除阿里云容器加速再试试（就是下载时间会有点久）
 
 ## 十九、程序启动时,指定工作区
 sudo pacman -S xorg-xprop
@@ -220,9 +229,10 @@ docker run -d \
   -e PGID=1000 \
   -e TZ=Europe/London \
   -p 8096:8096 \
-  -v /data/jellyfin/config:/config \
-  -v /data/jellyfin/cache:/cache \
-  -v /mnt/veracrypt1:/data/veracrypt \
+  -v /mnt/wd4t/docker/jellyfin/config:/config \
+  -v /mnt/wd4t/docker/jellyfin/cache:/cache \
+  -v /mnt/wd4t/video/ghs:/data/ghs \
+  -v /mnt/wd4t/docker/cloudTorrent/downloads:/data/cloud \
   --restart unless-stopped \
   linuxserver/jellyfin
 ```
