@@ -39,7 +39,7 @@ log_max_days = 3
 mkdir -p /etc/frp
 cp frps.ini /etc/frp
 cp frps /usr/bin
-cp systemd/frps.service /usr/lib/systemd/system/
+cp systemd/frps.service /etc/systemd/system/
 # 如果不清楚对应的执行命令可以康康frps.service文件里面的执行命令都写了啥
 # service使用参考：https://gitee.com/shafish/linux-usage-record/blob/master/linux%E5%90%AF%E5%8A%A8%E5%88%9D%E5%A7%8B%E5%8C%96.md
 systemctl enable frps
