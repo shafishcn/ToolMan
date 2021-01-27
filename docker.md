@@ -489,3 +489,16 @@ docker restart fiora
 ## 去广告adguardhome
 docker run --name adguardhome -v /data/adguardhome/work:/opt/adguardhome/work -v /data/adguardhome/conf:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p 68:68/udp -p 80:80/tcp -p 443:443/tcp -p 853:853/tcp -p 3000:3000/tcp -d --restart=unless-stopped adguard/adguardhome
 
+## api接口管理平台
+```
+docker run -dt -p 7777:80 -p 6666:3306 --privileged=true -v
+/home/graham/docker/eolinker/config:/eolinker_os/server/RTP/config -v
+/home/graham/docker/eolinker/mysql:/usr/local/mysql/var --name=eolinker
+--restart=unless-stopped eolinker/eolinker-api-management-system
+```
+
+- 80表示管理面板访问端口，对应7777
+- 3306表示内置数据库访问端口，对应6666，对应管理员密码为`root/root`
+- /home/graham/docker/eolinker目录权限需设置为777， `chmod -R 777 /home/graham/docker/eolinker`
+
+ref:https://hub.docker.com/r/eolinker/eolinker-api-management-system
