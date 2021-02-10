@@ -132,7 +132,7 @@ https://github.com/winsw/winsw/releases
     - 密码：被控制端的登录帐号对应密码
 - Remmina
     - 安装完remmina后发现没有rdp选项
-    - `sudo pacman -S freerdp`
+    - `sudo pacman -S freerdp libvncserver`
     - `killall remmina`
     - 再启动Remmina即可
     - ref：https://wiki.archlinux.org/index.php/Remmina
