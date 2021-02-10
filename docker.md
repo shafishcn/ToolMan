@@ -491,10 +491,7 @@ docker run --name adguardhome -v /data/adguardhome/work:/opt/adguardhome/work -v
 
 ## api接口管理平台
 ```
-docker run -dt -p 7777:80 -p 6666:3306 --privileged=true -v
-/home/graham/docker/eolinker/config:/eolinker_os/server/RTP/config -v
-/home/graham/docker/eolinker/mysql:/usr/local/mysql/var --name=eolinker
---restart=unless-stopped eolinker/eolinker-api-management-system
+docker run -dt -p 7777:80 -p 6666:3306 --privileged=true -v /home/graham/docker/eolinker/config:/eolinker_os/server/RTP/config -v /home/graham/docker/eolinker/mysql:/usr/local/mysql/var --name=eolinker --restart=unless-stopped eolinker/eolinker-api-management-system
 ```
 
 - 80表示管理面板访问端口，对应7777
@@ -502,3 +499,16 @@ docker run -dt -p 7777:80 -p 6666:3306 --privileged=true -v
 - /home/graham/docker/eolinker目录权限需设置为777， `chmod -R 777 /home/graham/docker/eolinker`
 
 ref:https://hub.docker.com/r/eolinker/eolinker-api-management-system
+
+## Rocket.Chat 聊天网站
+```shell
+docker run --name db -d mongo:4.0 --smallfiles --replSet rs0 --oplogSize 128
+docker exec -ti db mongo --eval "printjson(rs.initiate())"
+docker run --name rocketchat -d -p 5555:3000 --link db --env ROOT_URL=http://192.168.0.100 --env MONGO_OPLOG_URL=mongodb://db:27017/local --restart=unless-stopped rocket.chat
+
+docker run --name rocketchat -d -p 15555:3000 --link db --env ROOT_URL=http://8.129.84.85 --env MONGO_OPLOG_URL=mongodb://db:27017/local --restart=unless-stopped rocket.chat
+```
+- ROOT_URL：填上内网ip
+
+
+ref：https://hub.docker.com/_/rocket-chat
