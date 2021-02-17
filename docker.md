@@ -13,6 +13,12 @@ docker-compose version
 sudo pip uninstall docker-compose
 ```
 
+!> 不要用`snap` 
+
+```shell
+sudo snap remove docker
+```
+
 ## 一、docker名词说明
 - 镜像image
 相当于Java中的类文件，dockers可以通过镜像来创建多个不同的容器。
@@ -368,10 +374,11 @@ docker run -d \
   --name=jellyfin \
   -e PUID=1000 \
   -e PGID=1000 \
-  -e TZ=Europe/London \
+  -e TZ=Asia/Shanghai \
   -p 8096:8096 \
   -v /mnt/wd4t/docker/jellyfin/config:/config \
   -v /mnt/wd4t/docker/jellyfin/cache:/cache \
+  -v /mnt/wd4t:/data/all \
   -v /mnt/wd4t/video/ghs:/data/ghs \
   -v /mnt/wd4t/docker/cloudTorrent/downloads:/data/cloud \
   --restart unless-stopped \
@@ -387,13 +394,15 @@ docker run -d \
 --restart=unless-stopped \
 filebrowser/filebrowser
 
+初始密码admin/admin
+
 ## 查看docker运行容器的启动命令
 runlike:https://blog.csdn.net/qq_35462323/article/details/101607062
 
 ## 本地磁力资源下载
 docker run --name cloudTorrent -d -p 4000:3000 -v /mnt/veracrypt9/cloudTorrent:/downloads --restart=unless-stopped  jpillora/cloud-torrent
 
-docker run --name simpleTorrent -d -p 4000:3000 -v /mnt/wd4t/docker/cloudTorrent/downloads:/downloads -v /mnt/wd4t/docker/cloudTorrent/torrents:/torrents --restart=unless-stopped boypt/cloud-torrent --port 3000 -a graham:xxxx
+docker run --name simpleTorrent -d -p 4000:3000 -v /mnt/wd4t/docker/cloudTorrent/downloads:/downloads -v /mnt/wd4t/docker/cloudTorrent/torrents:/torrents --restart=unless-stopped boypt/cloud-torrent -p 3000 -a graham:xxxx
 
 ## Jenkins
 ```
@@ -512,3 +521,114 @@ docker run --name rocketchat -d -p 15555:3000 --link db --env ROOT_URL=http://8.
 
 
 ref：https://hub.docker.com/_/rocket-chat
+
+## 高仿youtube CMS
+https://github.com/mediacms-io/mediacms
+```shell
+git clone https://github.com/mediacms-io/mediacms
+cd mediacms
+# 更换源，否则执行Dockerfile更新时会很慢
+# 修改Dockerfile文件，在 RUN apt-get update -y && apt-get -y upgrade && apt-get install --no-install-recommends \前添加下面命令
+RUN echo "cp /etc/apt/sources.list /etc/apt/sources.list.bak && \
+deb http://mirrors.aliyun.com/debian/ buster main non-free contrib \
+deb-src http://mirrors.aliyun.com/debian/ buster main non-free contrib \
+deb http://mirrors.aliyun.com/debian-security buster/updates main \
+deb-src http://mirrors.aliyun.com/debian-security buster/updates main \
+deb http://mirrors.aliyun.com/debian/ buster-updates main non-free contrib \
+deb-src http://mirrors.aliyun.com/debian/ buster-updates main non-free contrib \
+deb http://mirrors.aliyun.com/debian/ buster-backports main non-free contrib \
+deb-src http://mirrors.aliyun.com/debian/ buster-backports main non-free contrib \
+" > /etc/apt/sources.list
+```
+```shell
+# 启动
+docker-compose build && docker-compose up -d
+```
+```shell
+# 完整Dockerfile如下
+FROM python:3.8-buster AS compile-image
+
+SHELL ["/bin/bash", "-c"]
+
+# Set up virtualenv
+ENV VIRTUAL_ENV=/home/mediacms.io
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV PIP_NO_CACHE_DIR=1
+
+RUN mkdir -p /home/mediacms.io/mediacms/{logs,pids} && cd /home/mediacms.io && python3 -m venv $VIRTUAL_ENV
+
+# Install dependencies:
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . /home/mediacms.io/mediacms
+WORKDIR /home/mediacms.io/mediacms
+
+RUN wget -q http://zebulon.bok.net/Bento4/binaries/Bento4-SDK-1-6-0-632.x86_64-unknown-linux.zip && \
+    mkdir -p /home/mediacms.io/mediacms/media_files/hls Bento4-SDK-1-6-0-632.x86_64-unknown-linux/bin/ && \
+    unzip -j Bento4-SDK-1-6-0-632.x86_64-unknown-linux.zip Bento4-SDK-1-6-0-632.x86_64-unknown-linux/bin/mp4hls -d Bento4-SDK-1-6-0-632.x86_64-unknown-linux/bin/ && \
+    rm Bento4-SDK-1-6-0-632.x86_64-unknown-linux.zip
+
+############ RUNTIME IMAGE ############
+FROM python:3.8-slim-buster as runtime-image
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV ADMIN_USER='admin'
+ENV ADMIN_PASSWORD='mediacms'
+ENV ADMIN_EMAIL='admin@localhost'
+
+# See: https://github.com/celery/celery/issues/6285#issuecomment-715316219
+ENV CELERY_APP='cms'
+
+# Use these to toggle which processes supervisord should run
+ENV ENABLE_UWSGI='yes'
+ENV ENABLE_NGINX='yes'
+ENV ENABLE_CELERY_BEAT='yes'
+ENV ENABLE_CELERY_SHORT='yes'
+ENV ENABLE_CELERY_LONG='yes'
+ENV ENABLE_MIGRATIONS='yes'
+
+# Set up virtualenv
+ENV VIRTUAL_ENV=/home/mediacms.io
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+COPY --from=compile-image /home/mediacms.io /home/mediacms.io
+
+RUN cp /etc/apt/sources.list /etc/apt/sources.list.bak && \
+echo "deb http://mirrors.aliyun.com/debian/ buster main non-free contrib \
+deb-src http://mirrors.aliyun.com/debian/ buster main non-free contrib \
+deb http://mirrors.aliyun.com/debian-security buster/updates main \
+deb-src http://mirrors.aliyun.com/debian-security buster/updates main \
+deb http://mirrors.aliyun.com/debian/ buster-updates main non-free contrib \
+deb-src http://mirrors.aliyun.com/debian/ buster-updates main non-free contrib \
+deb http://mirrors.aliyun.com/debian/ buster-backports main non-free contrib \
+deb-src http://mirrors.aliyun.com/debian/ buster-backports main non-free contrib \
+" > /etc/apt/sources.list
+
+RUN apt-get update -y && apt-get -y upgrade && apt-get install --no-install-recommends \
+    supervisor nginx ffmpeg imagemagick procps -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get purge --auto-remove && \
+    apt-get clean
+
+WORKDIR /home/mediacms.io/mediacms
+
+EXPOSE 9000 80
+
+RUN chmod +x ./deploy/docker/entrypoint.sh
+
+ENTRYPOINT ["./deploy/docker/entrypoint.sh"]
+
+CMD ["./deploy/docker/start.sh"]
+```
+
+- 注意项
+```shell
+# 配置管理员帐号 默认管理员帐号密码为:admin/mediacms
+docker exec -it mediacms_web_1 /bin/bash
+python manage.py createsuperuser
+```
+![](./imgs/docker/mediacms.png)
+
+![](https://cdn.shafish.cn/imgs/docker/cms/mediacms.png)
