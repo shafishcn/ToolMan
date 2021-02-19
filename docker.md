@@ -564,7 +564,8 @@ RUN pip install -r requirements.txt
 COPY . /home/mediacms.io/mediacms
 WORKDIR /home/mediacms.io/mediacms
 
-RUN wget -q http://zebulon.bok.net/Bento4/binaries/Bento4-SDK-1-6-0-632.x86_64-unknown-linux.zip && \
+# http://zebulon.bok.net/Bento4/binaries/Bento4-SDK-1-6-0-632.x86_64-unknown-linux.zip
+RUN wget -q https://cdn.shafish.cn/download/Bento4-SDK-1-6-0-632.x86_64-unknown-linux.zip && \
     mkdir -p /home/mediacms.io/mediacms/media_files/hls Bento4-SDK-1-6-0-632.x86_64-unknown-linux/bin/ && \
     unzip -j Bento4-SDK-1-6-0-632.x86_64-unknown-linux.zip Bento4-SDK-1-6-0-632.x86_64-unknown-linux/bin/mp4hls -d Bento4-SDK-1-6-0-632.x86_64-unknown-linux/bin/ && \
     rm Bento4-SDK-1-6-0-632.x86_64-unknown-linux.zip
@@ -632,3 +633,7 @@ python manage.py createsuperuser
 ![](./imgs/docker/mediacms.png)
 
 ![](https://cdn.shafish.cn/imgs/docker/cms/mediacms.png)
+
+
+docker system prune
+sudo du --max-depth=1 -h  /var/lib/docker/
