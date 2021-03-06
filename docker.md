@@ -681,3 +681,4 @@ This setup will automatically cover all the devices connected to your home route
     Enter your AdGuard Home server addresses there.
     You can't set a custom DNS server on some types of routers. In this case it may help if you set up AdGuard Home as a DHCP server. Otherwise, you should search for the manual on how to customize DNS servers for your particular router model.
 ```
+![](./imgs/docker/adguardhome.png)
