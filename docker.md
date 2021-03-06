@@ -510,6 +510,57 @@ docker run -dt -p 7777:80 -p 6666:3306 --privileged=true -v /home/graham/docker/
 ref:https://hub.docker.com/r/eolinker/eolinker-api-management-system
 
 ## Rocket.Chat 聊天网站
+### docker-compose
+https://docs.rocket.chat/installation/paas-deployments/aliyun/
+```
+mkdir /home/rocketchat
+cd /home/rocketchat && mkdir data dump
+vim docker-compose.yml
+```
+
+```yml
+version: '2'
+
+services:
+  rocketchat:
+    image: rocket.chat:latest
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+    environment:
+      - PORT=3000
+      - ROOT_URL=192.168.0.100 # 填上服务器ip或使用的域名
+      - MONGO_URL=mongodb://mongo:27017/rocketchat
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+      - Accounts_UseDNSDomainCheck=True
+    depends_on:
+      - mongo
+    ports:
+      - 8818:3000
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    volumes:
+     - $PWD/data:/data/db
+     - $PWD/dump:/dump
+    command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+
+  # this container's job is just run the command to initialize the replica set.
+  # it will run the command and remove himself (it will not stay running)
+  mongo-init-replica:
+    image: mongo
+    command: 'bash -c "for i in `seq 1 30`; do mongo mongo/rocketchat --eval \"rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})\" && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"'
+    depends_on:
+      - mongo
+```
+```shell
+#docker pull mongo
+#docker pull rocketchat/rocket.chat
+docker-compose up -d
+```
+
+### docker
 ```shell
 docker run --name db -d mongo:4.0 --smallfiles --replSet rs0 --oplogSize 128
 docker exec -ti db mongo --eval "printjson(rs.initiate())"
