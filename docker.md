@@ -597,14 +597,14 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY --from=compile-image /home/mediacms.io /home/mediacms.io
 
 RUN cp /etc/apt/sources.list /etc/apt/sources.list.bak && \
-echo "deb http://mirrors.aliyun.com/debian/ buster main non-free contrib \
-deb-src http://mirrors.aliyun.com/debian/ buster main non-free contrib \
-deb http://mirrors.aliyun.com/debian-security buster/updates main \
-deb-src http://mirrors.aliyun.com/debian-security buster/updates main \
-deb http://mirrors.aliyun.com/debian/ buster-updates main non-free contrib \
-deb-src http://mirrors.aliyun.com/debian/ buster-updates main non-free contrib \
-deb http://mirrors.aliyun.com/debian/ buster-backports main non-free contrib \
-deb-src http://mirrors.aliyun.com/debian/ buster-backports main non-free contrib \
+echo "deb http://mirrors.163.com/debian/ buster main non-free contrib \
+deb http://mirrors.163.com/debian/ buster-updates main non-free contrib \
+deb http://mirrors.163.com/debian/ buster-backports main non-free contrib \
+deb-src http://mirrors.163.com/debian/ buster main non-free contrib \
+deb-src http://mirrors.163.com/debian/ buster-updates main non-free contrib \
+deb-src http://mirrors.163.com/debian/ buster-backports main non-free contrib \
+deb http://mirrors.163.com/debian-security/ buster/updates main non-free contrib \
+deb-src http://mirrors.163.com/debian-security/ buster/updates main non-free contrib \
 " > /etc/apt/sources.list
 
 RUN apt-get update -y && apt-get -y upgrade && apt-get install --no-install-recommends \
@@ -630,10 +630,54 @@ CMD ["./deploy/docker/start.sh"]
 docker exec -it mediacms_web_1 /bin/bash
 python manage.py createsuperuser
 ```
+```yml
+# 修改访问端口直接修改docker-compose.yaml中web 80:80即可，再修改cms配置local_setting中的ip：port
+...
+web:
+    build:
+      context: .
+      target: runtime-image
+    image: mediacms:latest
+    deploy:
+      replicas: 1
+    ports:
+      - "4002:80"
+...
+```
+
 ![](./imgs/docker/mediacms.png)
 
 ![](https://cdn.shafish.cn/imgs/docker/cms/mediacms.png)
 
-
+## 清理docker 
 docker system prune
+docker-compose build && docker-compose up -d
 sudo du --max-depth=1 -h  /var/lib/docker/
+
+## AdGuard_Home
+https://github.com/AdguardTeam/AdGuardHome/wiki/Docker
+
+```
+docker run \
+--name adguardhome \
+-v /mnt/wd4t/docker/AdGuard_Home/work:/opt/adguardhome/work \
+-v /mnt/wd4t/docker/AdGuard_Home/conf:/opt/adguardhome/conf \
+-p 53:53/tcp -p 53:53/udp \
+-p 80:80/tcp -p 4004:3000/tcp \
+-p 67:67/udp -p 68:68/tcp -p 68:68/udp \
+-p 443:443/tcp \
+-p 853:853/tcp \
+--restart=always \
+-d adguard/adguardhome
+```
+
+`docker run --name adguardhome -v /mnt/wd4t/docker/AdGuard_Home/work:/opt/adguardhome/work -v /mnt/wd4t/docker/AdGuard_Home/conf:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 81:80/tcp -p 3000:3000/tcp -p 67:67/udp -p 70:68/tcp -p 70:68/udp -p 444:443/tcp -p 853:853/tcp --restart=always -d adguard/adguardhome`
+
+```
+This setup will automatically cover all the devices connected to your home router and you will not need to configure each of them manually.
+
+    Open the preferences for your router. Usually, you can access it from your browser via a URL (like http://192.168.0.1/ or http://192.168.1.1/). You may be asked to enter the password. If you don't remember it, you can often reset the password by pressing a button on the router itself. Some routers require a specific application, which in that case should be already installed on your computer/phone.
+    Find the DHCP/DNS settings. Look for the DNS letters next to a field which allows two or three sets of numbers, each broken into four groups of one to three digits.
+    Enter your AdGuard Home server addresses there.
+    You can't set a custom DNS server on some types of routers. In this case it may help if you set up AdGuard Home as a DHCP server. Otherwise, you should search for the manual on how to customize DNS servers for your particular router model.
+```
