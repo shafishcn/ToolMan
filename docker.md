@@ -526,30 +526,30 @@ services:
     image: rocket.chat:latest
     restart: unless-stopped
     volumes:
-      - ./uploads:/app/uploads
+      - /mnt/wd4t/docker/rocket_chat/uploads:/app/uploads
     environment:
       - PORT=3000
-      - ROOT_URL=192.168.0.100 # 填上服务器ip或使用的域名
+      - ROOT_URL=http://192.168.0.100
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
       - Accounts_UseDNSDomainCheck=True
     depends_on:
       - mongo
     ports:
-      - 8818:3000
+      - 4006:3000
 
   mongo:
-    image: mongo
+    image: mongo:4.0
     restart: unless-stopped
     volumes:
-     - $PWD/data:/data/db
-     - $PWD/dump:/dump
+     - /mnt/wd4t/docker/rocket_chat/data:/data/db
+     - /mnt/wd4t/docker/rocket_chat/dump:/dump
     command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
 
   # this container's job is just run the command to initialize the replica set.
   # it will run the command and remove himself (it will not stay running)
   mongo-init-replica:
-    image: mongo
+    image: mongo:4.0
     command: 'bash -c "for i in `seq 1 30`; do mongo mongo/rocketchat --eval \"rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})\" && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"'
     depends_on:
       - mongo
@@ -702,7 +702,11 @@ web:
 
 ## 清理docker 
 docker system prune
+
+## docker-compose运行
 docker-compose build && docker-compose up -d
+
+## 查看目录内容大小
 sudo du --max-depth=1 -h  /var/lib/docker/
 
 ## AdGuard_Home
@@ -733,3 +737,21 @@ This setup will automatically cover all the devices connected to your home route
     You can't set a custom DNS server on some types of routers. In this case it may help if you set up AdGuard Home as a DHCP server. Otherwise, you should search for the manual on how to customize DNS servers for your particular router model.
 ```
 ![](./imgs/docker/adguardhome.png)
+
+## Eclipse Theia
+ref：
+- https://github.com/theia-ide/theia-apps#theia-docker
+- https://theia-ide.org/ 
+- https://www.cnblogs.com/shiyanhe/p/13080818.html
+- 选择full版本至少需要10G+存储
+
+```shell
+docker pull theiaide/theia-full
+docker run --name theia -itd --init -p 4005:3000 -v "$(pwd):/mnt/wd4t/docker/theia/project:cached" theiaide/theia-full:latest
+```
+
+```shell
+git clone https://github.com/theia-ide/theia-apps.git && cd theia-apps/theia-https-docker
+docker build . --build-arg app=theia-full -t theiaide/theia-full-sec
+docker run --init -itd -p 10443:10443 -e token=RS497RkpEXyCksoJ -v "$(pwd):/var/docker/theia/project:cached" theiaide/theia-full-sec
+```
