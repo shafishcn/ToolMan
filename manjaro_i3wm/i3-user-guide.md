@@ -189,6 +189,34 @@ proxychains4 curl myip.ipip.net
 
 > 问题:docker pull镜像使用proxychain代理无效(待解决) 换国内镜像就行
 
+### Polipo
+另一个代理工具
+```
+sudo vim /etc/polipo/config
+```
+```
+proxyAddress = "0.0.0.0"
+allowedClients = 127.0.0.1
+socksParentProxy = "127.0.0.1:1080"
+socksProxyType = socks5
+```
+```
+sudo systemctl restart polipo
+vim /home/shafish/.zshrc
+```
+```
+alias proon='export http_proxy=http://127.0.0.1:8123 https_proxy=http://127.0.0.1:8123'
+alias prooff='unset http_proxy https_proxy'
+```
+```
+source /home/shafish/.zshrc
+sudo systemctl enable polipo.service
+```
+
+> 需要开启全局代理执行proon，用完了关闭使用prooff即可
+
+ref:https://neucrack.com/p/275
+
 ### 直接使用包管理工具安装
 ```shell
 sudo apt install proxychains-ng
