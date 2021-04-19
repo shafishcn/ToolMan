@@ -402,3 +402,10 @@ IdentityFile pem密钥文件(.pem文件)
 
 ## 四十一、qq
 yay -S com.qq.tim.spark
+
+## 屏幕共享：deskreen
+设置同一wifi下进行屏幕共享（老板监工用？）
+
+`yay -S deskreen`
+
+安装完成直接运行deskreen按照提示步骤操作即可。
