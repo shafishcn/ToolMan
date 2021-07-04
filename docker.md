@@ -400,9 +400,9 @@ filebrowser/filebrowser
 runlike:https://blog.csdn.net/qq_35462323/article/details/101607062
 
 ## 本地磁力资源下载
-docker run --name cloudTorrent -d -p 4000:3000 -v /mnt/veracrypt9/cloudTorrent:/downloads --restart=unless-stopped  jpillora/cloud-torrent
+docker run --name cloudTorrent -d -p 4000:3000 -v /mnt/wd4t/docker/cloudTorrent/downloads:/downloads --restart=unless-stopped  jpillora/cloud-torrent
 
-docker run --name simpleTorrent -d -p 4000:3000 -v /mnt/wd4t/docker/cloudTorrent/downloads:/downloads -v /mnt/wd4t/docker/cloudTorrent/torrents:/torrents --restart=unless-stopped boypt/cloud-torrent -p 3000 -a graham:xxxx
+docker run --name torrents -d -p 4000:3000 -v /mnt/wd4t/docker/cloudTorrent/downloads:/downloads -v /mnt/wd4t/docker/cloudTorrent/torrents:/torrents --restart=unless-stopped boypt/cloud-torrent -p 3000 -a graham:graham110
 
 ## Jenkins
 ```
@@ -747,11 +747,23 @@ ref：
 
 ```shell
 docker pull theiaide/theia-full
-docker run --name theia -itd --init -p 4005:3000 -v "$(pwd):/mnt/wd4t/docker/theia/project:cached" theiaide/theia-full:latest
+docker run --name theia-full -itd --init -p 4005:3000 -v "/mnt/wd4t/docker/theia/project:/mnt/wd4t/docker/theia/project" theiaide/theia-full:latest
+docker run --name theia-py -d --init -p 4005:3000 -v "/mnt/wd4t/docker/theia/project:/home/project" theiaide/theia-python:latest
 ```
 
 ```shell
 git clone https://github.com/theia-ide/theia-apps.git && cd theia-apps/theia-https-docker
 docker build . --build-arg app=theia-full -t theiaide/theia-full-sec
-docker run --init -itd -p 10443:10443 -e token=RS497RkpEXyCksoJ -v "$(pwd):/var/docker/theia/project:cached" theiaide/theia-full-sec
+docker run --init -itd -p 10443:10443 -e token=RS497RkpEoJ -v "$(pwd):/var/docker/theia/project:cached" theiaide/theia-full-sec
 ```
+
+```shell
+# java
+docker volume create theia_workspaces
+docker run -d --name theia-java --restart=unless-stopped --init -p 4005:3000 -p 4105:8080 -v theia_data:/home/project raonigabriel/theia-java
+# docker run -it -p 3000:3000 -v "$(pwd):/home/project:cached" theiaide/theia-java  # OpenJ9 jdk8u191-b26
+```
+
+## mkdocs-material
+在线电子书格式：https://github.com/squidfunk/mkdocs-material
+`docker run -d --name mkdocs -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material`

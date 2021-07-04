@@ -409,3 +409,24 @@ yay -S com.qq.tim.spark
 `yay -S deskreen`
 
 安装完成直接运行deskreen按照提示步骤操作即可。
+
+## zip中文解压乱码
+`unzip -O cp936 xxxx.zip`
+
+## 两个linux之间传输文件
+- 将本地文件拷贝到远程 ：
+  - `scp 文件名 –用户名@计算机IP或者计算机名称:远程路径` 
+  - `scp local_file remote_username@remote_ip:remote_folder` //输入远程主机登录密码
+  - `scp local_file remote_ip:remote_folder` // 需要输入远程主机登录用户及密码
+- 从远程将文件拷回本地 ：`scp –用户名@计算机IP或者计算机名称:文件名 本地路径`
+- 将本地目录拷贝到远程 ：
+  - `scp -r 目录名 用户名@计算机IP或者计算机名称:远程路径`
+  - `scp -r local_folder remote_username@remote_ip:remote_folder `
+
+
+```sh
+# 当前目录下的settings.xml文件复制到192.168.0.107主机下的/home/shafish/Public/Git/config/maven/目录下
+scp settings.xml shafish@192.168.0.107:/home/shafish/Public/Git/config/maven/
+```
+
+ref：https://blog.csdn.net/gatieme/article/details/51673229

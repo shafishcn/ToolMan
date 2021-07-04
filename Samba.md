@@ -8,8 +8,8 @@ sudo vim /etc/samba/smb.conf
 comment = home
 browseable = yes
 path = /mnt/wd4t/
-create mask = 0775
-directory mask = 0775
+create mask = 0777
+directory mask = 0777
 valid users = shafish
 force user = nobody
 force group = nogroup
@@ -21,6 +21,7 @@ available = yes
 sudo smbpasswd -a shafish
 sudo service smbd restart
 smbclient -L //192.168.0.100/home
+smbclient -L //192.168.0.100/home -U%
 ```
 `sudo mkdir /mnt/wd4t`
 `sudo mount -t cifs //192.168.0.100/home /mnt/wd4t -o username=shafish`
