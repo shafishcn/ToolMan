@@ -54,7 +54,8 @@ export XMODIFIERS="@im=fcitx"
 export QT_IM_MODULE="fcitx"
 
 ## 七、iease-music 改成网易云
-sudo pacman -S iease-music
+`sudo pacman -S iease-music`
+推荐`sudo pacman -S electron-netease-cloud-music` # archlinuxcn
 
 ## 八、trojan开启自启动
 systemctl enable trojan
@@ -413,6 +414,11 @@ yay -S com.qq.tim.spark
 ## zip中文解压乱码
 `unzip -O cp936 xxxx.zip`
 
+```shell
+vim ~/.zshrc
+alias unzip='unzip -O cp936'
+```
+
 ## 两个linux之间传输文件
 - 将本地文件拷贝到远程 ：
   - `scp 文件名 –用户名@计算机IP或者计算机名称:远程路径` 
@@ -430,3 +436,14 @@ scp settings.xml shafish@192.168.0.107:/home/shafish/Public/Git/config/maven/
 ```
 
 ref：https://blog.csdn.net/gatieme/article/details/51673229
+
+## 电子文档阅读软件-calibre
+`sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin`
+
+## pdf-masterpdfeditor
+`sudo pacman -S masterpdfeditor`
+
+https://github.com/JingMatrix/keygen_master_pdf_editor
+
+## wine
+pacman -S wine wine-mono
