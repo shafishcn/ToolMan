@@ -1,3 +1,5 @@
+[toc]
+
 > 软件安装规范（安装目录约定）
 https://www.cnblogs.com/ggjucheng/archive/2012/08/20/2647788.html
 
@@ -447,3 +449,7 @@ https://github.com/JingMatrix/keygen_master_pdf_editor
 
 ## wine
 pacman -S wine wine-mono
+
+## 添加新盘后系统引导错误
+https://shafish.cn/1726.html
+https://shafish.cn/1733.html
