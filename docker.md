@@ -767,3 +767,8 @@ docker run -d --name theia-java --restart=unless-stopped --init -p 4005:3000 -p 
 ## mkdocs-material
 在线电子书格式：https://github.com/squidfunk/mkdocs-material
 `docker run -d --name mkdocs -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material`
+
+## 在线uml绘图
+https://github.com/jgraph/docker-drawio
+
+`docker run -d --name=drawio -e COUNTRY_CODE=CN --restart=unless-stopped -p 4007:8080 -p 8443:8443 jgraph/drawio`
