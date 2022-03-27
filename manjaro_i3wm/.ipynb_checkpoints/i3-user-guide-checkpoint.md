@@ -476,37 +476,3 @@ sudo -i -u postgres
 
 sudo systemctl start postgresql.service
 ```
-
-## 显示器间移动工作区
-``` conf
-# Moving workspaces between screens
-bindsym $mod+p move workspace to output right
-```
-
-## 双屏幕
-xrandr --output DisplayPort-1 --auto --right-of eDP
-
-## kvm增大swap容量
-1、建立一个分区，使用dd命令
-
-dd if=/dev/zero of=/home/swap bs=1024 count=10240000
-
-会创建 /home/swap 一个分区文件。文件大小是10240000个block，bs为1个block的大小为1k，这里创建10G大小的swap；
-
-# ll /home/swap
-
--rw-r--r-- 1 root root 10485760000 4月  11 15:29 /home/swap
-
-2、把创建的文件变成swap分区，-f 参数强制执行；
-
-/sbin/mkswap -f /home/swap
-
-3、使swap分区有效
-
-/sbin/swapon /home/swap
-
-free -m 查看swap 空间已经增加10G空间，此设置机器重启后失效，想要永久生效，需要加入fstab文件中；
-
-4、vim /etc/fstab 添加一行，保存退出，重启后也生效；切记不能删除 /home/swap 文件，删除后新增加的swap空间会不存在；
-
-/home/swap    swap     swap    defaults        0 0

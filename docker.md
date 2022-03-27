@@ -371,7 +371,7 @@ docker push shafish/fishajavaenv
 docker run -d --name=jellyfin --env=PGID=1000 --env=TZ=Europe/London --env=PUID=1000 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --env=HOME=/root --env=LANGUAGE=en_US.UTF-8 --env=LANG=en_US.UTF-8 --env=TERM=xterm --env=NVIDIA_DRIVER_CAPABILITIES=compute,video,utility --volume=/data/jellyfin/config:/config --volume=/data/jellyfin/cache:/cache --volume=/mnt:/data/veracrypt --volume=/config -p 8096:8096 --expose=8920 --restart=unless-stopped linuxserver/jellyfin
 
 docker run -d \
-  --name=jellyfin9-5 \
+  --name=jellyfin \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=Asia/Shanghai \
@@ -383,6 +383,8 @@ docker run -d \
   -v /mnt/wd4t/docker/cloudTorrent/downloads:/data/cloud \
   --restart unless-stopped \
   linuxserver/jellyfin:latest
+
+docker run -d --name=jellyfin -e PUID=1000 -e PGID=1000 -e TZ=Asia/Shanghai -p 8096:8096 -v /mnt/wd4t/docker/jellyfin/config:/config -v /mnt/wd4t/docker/jellyfin/cache:/cache -v /mnt/wd4t:/data/all -v /mnt/wd4t/video/ghs:/data/ghs -v /mnt/wd4t/docker/cloudTorrent/downloads:/data/cloud --restart unless-stopped linuxserver/jellyfin:latest 
 
 ## filebrower
 docker run -d \
@@ -405,7 +407,12 @@ docker run --name cloudTorrent -d -p 4000:3000 -v /mnt/wd4t/docker/cloudTorrent/
 docker run --name torrents -d -p 4000:3000 -v /mnt/wd4t/docker/cloudTorrent/downloads:/downloads -v /mnt/wd4t/docker/cloudTorrent/torrents:/torrents --restart=unless-stopped boypt/cloud-torrent -p 3000 -a graham:graham110
 
 
-/mnt/wd4t/video/ghs/torrents/cloud-torrent_linux_amd64 --port 4000 -t torrent-down -a graham:graham110 --proxy-url socks5://127.0.0.1:1080
+/mnt/wd4t/video/ghs/torrents/cloud-torrent_linux_amd64 --port 4000 -t torrent-down -a graham:graham110
+ --proxy-url socks5://127.0.0.1:1080
+
+/home/shafish/Project/cloud-torrent/cloud-torrent_linux_amd64 --port 4000 -t torrent-down -a graham:graham110 --proxy-url socks5://127.0.0.1:1080
+
+docker run -d -p 3000:3000 -v /root/downloads:/downloads -v /root/torrents:/torrents boypt/cloud-torrent
 
 ## Jenkins
 ```
@@ -774,4 +781,7 @@ docker run -d --name theia-java --restart=unless-stopped --init -p 4005:3000 -p 
 ## 在线uml绘图
 https://github.com/jgraph/docker-drawio
 
-`docker run -d --name=drawio -e COUNTRY_CODE=CN --restart=unless-stopped -p 4007:8080 -p 8443:8443 jgraph/drawio`
+`docker run -d --name=drawio -e COUNTRY_CODE=CN --restart=unless-stopped -p 4007:8080 -p 8443:8443 jgraph/drawio:16.6.6`
+
+
+curl -L "https://d.pcs.baidu.com/file/fdc6ed31evc3a869cf52438ea38aefc2?fid=3107137870-250528-998089118346382&dstime=1643373666&rt=sh&sign=FDtAERVJouK-DCb740ccc5511e5e8fedcff06b081203-kCbf%2B4zv4ANLxUJRNs8MbRAD%2BUg%3D&expires=8h&chkv=1&chkbd=0&chkpc=&dp-logid=8716646158542612248&dp-callid=0&shareid=3248416136&r=839701185&resvsflag=1-12-0-1-1-1&vuk=691799587&file_type=0" --output "cxuan_PDF 大全.zip" -A "pan.baidu.com" -b "BDUSS=dVTmhlSlNDcThyUDExdXc3OU41UUx3ZVNBSmtYaUR3RWNBY2YwOWVFMEljQnRpSVFBQUFBJCQAAAAAAAAAAAEAAABIKfw4srvS1M7vz7K38QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjj82EI4~NhVD"

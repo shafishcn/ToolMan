@@ -46,3 +46,11 @@ ffmpeg -y -i networkConnectorsExplained.mp4 -vcodec copy -acodec copy -vbsf h264
 
 
 ffmpeg -i networkConnectorsExplained.ts -c copy -map 0 -f segment -segment_list networkConnectorsExplained.m3u8 -segment_time 40 networkConnectorsExplained-%03d.ts
+
+下载自动生成的字幕
+youtube-dl --proxy socks5://127.0.0.1:1080/ --sub-lang zh-Hans --write-auto-sub --sub-format srt --skip-download https://www.youtube.com/watch?v=7KCS70sCoK0
+
+下载视频并合并字幕
+youtube-dl --proxy socks5://127.0.0.1:1080/ --sub-lang zh-Hans https://www.youtube.com/watch?v=7KCS70sCoK0
+
+ffmpeg -i 'How to Create an Agent Node in Jenkins.mp4' -c:v h264 -c:a copy -vf subtitles='How to Create an Agent Node in Jenkins-99DddJiH7lM.zh-Hans.vtt' 'NHow to Create an Agent Node in Jenkins.mp4'

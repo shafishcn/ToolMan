@@ -13,6 +13,7 @@ MYSQL_USER=用户名
 MYSQL_PASSWORD=密码
 SECURE_DOMAINS=shafish.cn
 ```
+XeGFr3xFSaNNHpnh
 
 - 2.变量生效
 resource /etc/profile
@@ -21,7 +22,29 @@ resource /etc/profile
 ```shell
 echo $MYSQL_DB
 echo $MYSQL_USER
-echo MYSQL_PASSWORD
+echo $MYSQL_PASSWORD
+```
+
+## node环境安装
+> 使用nvm安装
+
+```shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+nvm ls-remote
+nvm install v16.13.1 # 列出的某个lts版本
+```
+
+## cnpm安装
+```shell
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
+
+## npm设置淘宝源
+```shell
+npm config set registry http://registry.npm.taobao.org
+npm get registry 
+# 恢复官方源
+npm config set registry https://registry.npmjs.org
 ```
 
 ## 三、安装Waline
@@ -30,9 +53,11 @@ npm install -g pm2
 
 - 安装waline
 npm install @waline/vercel
-
+npm install -g cnpm --registry=https://registry.npm.taobao.org
 - pm2运行waline
 pm2 start node_modules/@waline/vercel/vanilla.js
+
+node node_modules/@waline/vercel/vanilla.js
 
 - 查看状态
 pm2 list
@@ -42,6 +67,39 @@ pm2 delete all
 pm2 delete appName
 
 > 如果修改了应用配置行为，需要先删除应用，重新启动后方才会生效
+
+## docker安装(再见)
+```yml
+version: '3'
+
+services:
+  waline:
+    container_name: waline
+    image: lizheming/waline:latest
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:8360:8360
+    volumes:
+      - /home/ubuntu/docker/waline/data:/app/data
+    environment:
+      TZ: 'Asia/Shanghai'
+      MYSQL_DB: 'waline'
+      MYSQL_USER: 'waline'
+      MYSQL_PASSWORD: 'MZS2L3RAWxKEspp4'
+      SITE_NAME: 'shafish'
+      SITE_URL: 'https://shafish.cn'
+      SECURE_DOMAINS: 'shafish.cn,comment.shafish.cn'
+```
+
+docker run -d\
+  -e MYSQL_DB=waline \
+  -e MYSQL_USER=waline \
+  -e MYSQL_PASSWORD=MZS2L3RAWxKEspp4 \
+  -p 8360:8360 \
+  --restart=unless-stopped \
+  --network=host \
+  --name waline_comment \
+  lizheming/waline:
 
 ## 四、更多waline服务端配置
 - https://waline.js.org/reference/server.html
