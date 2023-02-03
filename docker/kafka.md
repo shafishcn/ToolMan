@@ -185,3 +185,26 @@ kafka_2.13-3.3.2/bin/kafka-topics.sh --describe --bootstrap-server 192.168.0.162
 #Topic: test-ken-io      TopicId: qG6YjyvwRxak0sFPN208XA PartitionCount: 1       ReplicationFactor: 3    Configs: 
 #Topic: test-ken-io      Partition: 0    Leader: 1       Replicas: 1,2,3 Isr: 2,3,1
 ```
+
+### kafka-console-producer.sh
+> 给指定主题发送消息
+
+``` shell
+cd /opt/kafka_2.13-3.3.2
+./bin/kafka-console-producer.sh --bootstrap-server 192.168.0.162:9092 --topic test-ken-io
+```
+
+### kafka-console-consumer.sh
+> 消费指定主题消息
+
+``` shell
+./bin/kafka-console-consumer.sh --bootstrap-server 192.168.0.162:9092 --topic test-ken-io --group test-group --from-beginning
+```
+- group：指定消费组
+
+### kafka-consumer-groups.sh
+> 查看指定消费组信息
+
+``` shell
+./bin/kafka-consumer-groups.sh --bootstrap-server 192.168.0.162:9092 --describe --group test-group
+```
