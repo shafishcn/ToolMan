@@ -123,7 +123,7 @@ https://github.com/winsw/winsw/releases
 去`powershell`命令行中执行 `.\winsw install`安装frp服务，再运行`.\winsw start`命令启动frp服务
 
 ### Linux
-暂时略
+
 
 ## 三、远程桌面使用
 - Window自带的远程桌面
@@ -224,4 +224,189 @@ bind_port = 6000
 # 被控制端与控制端中加入以下设置：
 use_encryption = true
 use_compression = true
+```
+
+## 五、示例记录
+### 服务端：frps.ini
+``` 
+[common]
+bind_port = server_port
+token = servertoken
+dashboard_port = 7500
+dashboard_user = dashboard_user
+dashboard_pwd = dashboard_pwd
+vhost_http_port = 7086
+#vhost_https_port = 7088
+subdomain_host = shafish.cn
+log_file = /xxxx/frps.log
+log_level = info
+log_max_days = 3
+```
+
+### 被控端：frpc.ini
+```
+[common]
+server_addr = server_ip
+server_port = server_port
+token = servertoken
+log_file = /xxxx/frps.log
+log_level = info
+log_max_days = 3
+
+[amd-pve-root]
+type = stcp
+local_ip = 127.0.0.1
+local_port = 8006
+sk = amd-pve-root-token
+use_compression = true
+
+[amd-pve-ssh]
+type = stcp
+local_ip = 127.0.0.1
+local_port = 22
+sk = amd-pve-ssh-token
+```
+```
+[common]
+server_addr = server_ip
+server_port = server_port
+token = servertoken
+log_file = /xxxx/frps.log
+log_level = info
+log_max_days = 3
+
+[amd-docker-ssh]
+type = stcp
+local_ip = 127.0.0.1
+local_port = 22
+sk = amd-docker-ssh-token
+
+[code-server-web]
+type = http
+local_ip = 127.0.0.1
+local_port = 8443
+use_encryption = false
+use_compression = true
+subdomain = code
+http_user = code-server-user
+http_pwd = code-server-pwd
+```
+```
+[common]
+server_addr = server_ip
+server_port = server_port
+token = servertoken
+log_file = /xxxx/frps.log
+log_level = info
+log_max_days = 3
+
+[amd-fedora-ssh]
+type = stcp
+local_ip = 127.0.0.1
+local_port = 22
+sk = amd-fedora-ssh-token
+```
+```
+[common]
+server_addr = server_ip
+server_port = server_port
+token = servertoken
+log_file = /xxxx/frps.log
+log_level = info
+log_max_days = 3
+
+[n5105-pve-ssh]
+type = stcp
+local_ip = 127.0.0.1
+local_port = 22
+sk = n5105-pve-ssh-token
+
+[n5105-pve-root]
+type = stcp
+local_ip = 192.168.0.130
+local_port = 8006
+sk = n5105-pve-root-token
+use_compression = true
+```
+```
+[common]
+server_addr = server_ip
+server_port = server_port
+token = servertoken
+log_file = /xxxx/frps.log
+log_level = info
+log_max_days = 3
+
+[n5105-docker-ssh]
+type = stcp
+local_ip = 127.0.0.1
+local_port = 22
+sk = n5105-docker-ssh-token
+```
+
+### 控制端：frpc.ini
+```
+[common]
+server_addr = server_ip
+server_port = server_port
+token = servertoken
+log_file = /xxxx/frps.log
+log_level = info
+log_max_days = 3
+
+[local-amd-pve]
+type = stcp
+role = visitor
+server_name = amd-pve-root
+sk = amd-pve-root-token
+bind_addr = 127.0.0.1
+bind_port = 8007
+
+[local-amd-ssh]
+type = stcp
+role = visitor
+server_name = amd-pve-ssh
+sk = amd-pve-ssh-token
+bind_addr = 127.0.0.1
+bind_port = 8008
+
+[local-amd-docker-ssh]
+type = stcp
+role = visitor
+server_name = amd-docker-ssh
+sk = amd-docker-ssh-token
+bind_addr = 127.0.0.1
+bind_port = 8009
+
+[local-amd-fedora-ssh]
+type = stcp
+role = visitor
+server_name = amd-fedora-ssh
+sk = amd-fedora-ssh-token
+bind_addr = 127.0.0.1
+bind_port = 8010
+
+[local-n5105-pve]
+type = stcp
+role = visitor11
+server_name = n5105-pve-root
+sk = n5105-pve-root-token
+bind_addr = 127.0.0.1
+bind_port = 8011
+
+[local-n5105-ssh]
+type = stcp
+role = visitor
+server_name = n5105-pve-ssh
+sk = n5105-pve-ssh-token
+bind_addr = 127.0.0.1
+bind_port = 8012
+
+[local-n5105-docker-ssh]
+type = stcp
+role = visitor
+server_name = n5105-docker-ssh
+sk = n5105-docker-ssh-token
+bind_addr = 127.0.0.1
+bind_port = 8013
 ```

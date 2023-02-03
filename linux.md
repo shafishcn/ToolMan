@@ -61,3 +61,15 @@ ref:https://moe.best/tutorial/acme-le-wc.html
 - 查询某个端口是否开启：`firewall-cmd --query-port=80/tcp --zone=public`
 - 开启某个端口：`firewall-cmd --zone=public --add-port=80/tcp --permanent`
 - `systemctl status firewalld`
+
+## 五、添加环境变量
+``` sh
+vim /etc/profile.d/xxx.sh
+```
+``` sh
+export JAVA_HOME=/opt/jdk-11.0.17
+export PATH=$PATH:$JAVA_HOME/bin
+```
+``` sh
+source /etc/profile.d/xxx.sh
+```
