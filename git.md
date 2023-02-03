@@ -16,7 +16,7 @@
 
 ## 基本配置
 - `git config --list`：查看git配置
-- `git config --global user.name "shafishcn"`：显示名
+- `git config --global user.name "shafish"`：显示名
 - `git config --global user.email shafish_cn@163.com`：邮箱
 - `git config user.name`：查看配置项及配置文件路径
 - `git init`：创建本地git仓库
