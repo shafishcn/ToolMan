@@ -34,7 +34,6 @@ docker network create -d macvlan --subnet=172.23.0.0/24 --gateway=172.23.0.1 -o 
 - `ACK偏移量`：消息在主题中的偏移量offset
 - `Zookeeper`：存储主题、分区等数据，并完成broker节点监控、controller选举等工作。
 
-
 ## 一、环境安装
 ### Zookeeper集群部署
 > docker-compose.yml
@@ -209,6 +208,8 @@ kafka_2.13-3.3.2/bin/kafka-topics.sh --create --bootstrap-server 192.168.0.161:9
 kafka_2.13-3.3.2/bin/kafka-topics.sh --create --bootstrap-server 192.168.0.162:9092 --replication-factor 3 --partitions 1 --topic test-ken-io
 # 是否提示重复
 kafka_2.13-3.3.2/bin/kafka-topics.sh --create --bootstrap-server 192.168.0.163:9092 --replication-factor 3 --partitions 1 --topic test-ken-io
+# zk 命令
+kafka_2.13-3.3.2/bin/zookeeper-shell.sh 192.168.0.161:2181
 ```
 
 ## 三、应用
@@ -318,6 +319,12 @@ p78～88,这tm精华好吧
 
 ## 五、深入部分
 ### 1.主题
+- 主题创建（createToics指令处理）：
+    - 1.对用户进行认证，并检查请求内容是否正确
+    - 2.为新主题的分区生成AR副本列表
+    - 3.zookeeper中创建节点，并存储主题相关元数据
+    - 4.controller节点发消息给所有broker节点，更新集群元数据：如果被分配了leader副本，则需要接收生产者发送的消息;如果被分配了follow副本，则同步leader副本数据。
+
 ### 2.生产者与消息发布
 ### 3.消费者与消息订阅
 ### 4.消息存储机制与读写流程
