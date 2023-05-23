@@ -73,3 +73,22 @@ export PATH=$PATH:$JAVA_HOME/bin
 ``` sh
 source /etc/profile.d/xxx.sh
 ```
+
+## 六、软链接
+``` shell
+ln -s xxx xx/bin
+```
+
+## 七、磁盘修复
+``` shell
+sudo fsck -y /dev/sdb
+# 如果卸载后依然提示磁盘被占有，检查被哪些进程占用
+lsof | grep /dev/sdb
+```
+
+## 八、appimage
+提示AppImages require FUSE to run.
+``` shell
+sudo add-apt-repository universe
+sudo apt install libfuse2
+```

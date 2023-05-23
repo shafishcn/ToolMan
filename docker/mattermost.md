@@ -1,5 +1,5 @@
 ``` shell
-docker run --name mattermost-preview \
+docker run --name mattermost-preview-cp \
   --publish 8065:8065 \
   --add-host dockerhost:127.0.0.1 \
   --rm \
@@ -7,7 +7,7 @@ docker run --name mattermost-preview \
 ```
 ``` shell
 # 复制配置文件
-docker container cp mattermost-preview:/mm/mattermost/config /data/docker/mattermost/config/
+docker container cp mattermost-preview-cp:/mm/mattermost/config /data/docker/mattermost/config/
 ```
 
 ``` yml
