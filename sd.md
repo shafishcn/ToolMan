@@ -43,3 +43,57 @@ python3 launch.py # 报错退出了两次，重新执行该命令即可
 - stable-diffusion-webui-localization-zh_Hans	https://github.com/hanamizuki-ai/stable-diffusion-webui-localization-zh_Hans.git
 - stable-diffusion-webui-wd14-tagger	https://github.com/toriato/stable-diffusion-webui-wd14-tagger.git
 - ultimate-upscale-for-automatic1111	https://github.com/Coyote-A/ultimate-upscale-for-automatic1111.git
+
+## python版本管理顺便测试安装下so-vits-svc
+> https://realpython.com/intro-to-pyenv/
+
+``` shell
+apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev openssl-dev
+curl https://pyenv.run | bash
+```
+
+``` shell
+# Load pyenv automatically by appending
+# the following to 
+~/.bash_profile if it exists, otherwise ~/.profile (for login shells)
+and ~/.bashrc (for interactive shells) :
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# Restart your shell for the changes to take effect.
+
+# Load pyenv-virtualenv automatically by adding
+# the following to ~/.bashrc:
+
+eval "$(pyenv virtualenv-init -)"
+```
+``` shell
+exec "$SHELL"
+```
+### 查看可安装版本
+pyenv install --list | grep " 3\.[6789]"
+### 安装特定版本
+pyenv install -v 3.7.2
+### 卸载特定版本
+pyenv uninstall 3.7.2
+### 切换版本
+pyenv global 3.7.2
+### 查看安装版本
+pyenv versions
+### 创建指定版本的环境
+``` python
+pyenv install -v 3.8.9
+pyenv virtualenv 3.8.9 svc
+git clone https://github.com/svc-develop-team/so-vits-svc
+cd so-vits-svc
+pyenv local svc
+python -V
+# 升级下pip
+/home/用户名/.pyenv/versions/3.8.9/envs/svc/bin/python3.8 -m pip install --upgrade pip
+# 安装so-vits-svc依赖
+pip install -r requirements.txt
+#启动
+python webUI.py
+```
