@@ -1,0 +1,15 @@
+``` yml
+version: '3'
+services:
+  trilium-cn:
+    image: nriver/trilium-cn
+    restart: always
+    ports:
+      - "8088:8080"
+    volumes:
+      # 把同文件夹下的 trilium-data 目录映射到容器内
+      - ./trilium-data:/root/trilium-data
+    environment:
+      # 环境变量表示容器内笔记数据的存储路径
+      - TRILIUM_DATA_DIR=/root/trilium-data
+```

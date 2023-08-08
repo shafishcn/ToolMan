@@ -97,3 +97,29 @@ pip install -r requirements.txt
 #启动
 python webUI.py
 ```
+
+## 升级xformers
+python3 launch.py --xformers --reinstall-xformers
+
+python3 launch.py --xformers
+
+## 升级sd webui
+git fetch --all
+git pull
+
+## 代理配置（未验）
+vim sdhome/modules/launch_utils.py
+
+``` python
+## 添加--proxy=http://192.168.0.109:8118
+...
+def run_pip(command, desc=None, live=default_command_live):
+    ...
+    return run(f'"{python}" -m pip --proxy=http://192.168.0.109:8118 {command} --prefer-binary{index_url_line}', desc=f"Installing {desc}", errdesc=f"Couldn't install {desc}", live=live)
+...
+def prepare_environment():
+    ...
+    torch_command = os.environ.get('TORCH_COMMAND', f"pip --proxy=http://192.168.0.109:8118 install torch==2.0.1 torchvision==0.15.2 --extra-index-url {torch_index_url}")
+    ...
+...    
+```
