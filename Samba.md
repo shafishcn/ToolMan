@@ -25,3 +25,6 @@ smbclient -L //192.168.0.100/home -U%
 ```
 `sudo mkdir /mnt/wd4t`
 `sudo mount -t cifs //192.168.0.100/home /mnt/wd4t -o username=shafish`
+
+/mnt/hgst/
+/mnt/wd/
